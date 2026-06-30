@@ -143,6 +143,66 @@
   .color-orange { color: var(--orange); }
   .color-red { color: var(--red); }
   .color-purple { color: var(--purple); }
+  .run-section {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .run-section-title {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .run-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .run-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .hr-zones {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .hr-zone-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+  .hr-zone-label {
+    width: 20px;
+    text-align: right;
+    color: var(--muted);
+    font-size: 0.65rem;
+    flex-shrink: 0;
+  }
+  .hr-zone-bar-bg {
+    flex: 1;
+    height: 14px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .hr-zone-bar {
+    height: 100%;
+    border-radius: 3px;
+    min-width: 2px;
+  }
+  .hr-zone-time {
+    width: 40px;
+    text-align: right;
+    color: var(--muted);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
 </style>
 </head>
 <body>
@@ -212,6 +272,40 @@ function formatDate(dateStr) {
 function formatDateTime(dateStr) {
   const d = new Date(dateStr.replace(' ', 'T'));
   return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+}
+
+function formatSplitPace(seconds) {
+  if (!seconds) return '--';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.round(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+function formatZoneTime(seconds) {
+  if (!seconds || seconds < 1) return '0s';
+  const m = Math.floor(seconds / 60);
+  const s = Math.round(seconds % 60);
+  if (m > 0) return `${m}m`;
+  return `${s}s`;
+}
+
+function renderHrZones(a) {
+  const zones = [
+    { label: 'Z1', seconds: a.hrTimeInZone_1 || 0, color: '#94a3b8' },
+    { label: 'Z2', seconds: a.hrTimeInZone_2 || 0, color: '#6c8cff' },
+    { label: 'Z3', seconds: a.hrTimeInZone_3 || 0, color: '#4ade80' },
+    { label: 'Z4', seconds: a.hrTimeInZone_4 || 0, color: '#fb923c' },
+    { label: 'Z5', seconds: a.hrTimeInZone_5 || 0, color: '#f87171' },
+  ];
+  const maxSec = Math.max(...zones.map(z => z.seconds), 1);
+  return zones.map(z => {
+    const pct = Math.max((z.seconds / maxSec) * 100, 0);
+    return `<div class="hr-zone-row">
+      <span class="hr-zone-label">${z.label}</span>
+      <div class="hr-zone-bar-bg"><div class="hr-zone-bar" style="width:${pct}%;background:${z.color}"></div></div>
+      <span class="hr-zone-time">${formatZoneTime(z.seconds)}</span>
+    </div>`;
+  }).join('');
 }
 
 async function init() {
@@ -374,7 +468,8 @@ async function init() {
   actContainer.innerHTML = activities.map(a => {
     const typeKey = a.activityType?.typeKey || 'activity';
     const isRun = typeKey === 'running';
-    const statsHtml = isRun ? `
+
+    const coreStats = isRun ? `
       <div>
         <div class="activity-stat-label">Distance</div>
         <div class="activity-stat-value">${formatDistance(a.distance)} <span class="stat-unit">km</span></div>
@@ -402,7 +497,71 @@ async function init() {
       </div>
     `;
 
-    const durationLine = isRun ? `${formatDistance(a.distance)} km in ${formatDuration(a.duration)}` : formatDuration(a.duration);
+    let runExtras = '';
+    if (isRun) {
+      // Fastest Splits
+      const splits = [];
+      if (a.fastestSplit_1000) splits.push({ label: '1K', val: formatSplitPace(a.fastestSplit_1000) });
+      if (a.fastestSplit_1609) splits.push({ label: 'Mile', val: formatSplitPace(a.fastestSplit_1609) });
+      if (a.fastestSplit_5000) splits.push({ label: '5K', val: formatSplitPace(a.fastestSplit_5000 / 5) });
+      if (a.fastestSplit_10000) splits.push({ label: '10K', val: formatSplitPace(a.fastestSplit_10000 / 10) });
+      const splitsHtml = splits.length ? `
+        <div class="run-section">
+          <div class="run-section-title">Fastest Splits</div>
+          <div class="run-grid-4">
+            ${splits.map(s => `<div>
+              <div class="activity-stat-label">${s.label}</div>
+              <div class="activity-stat-value" style="font-size:0.9rem">${s.val}</div>
+            </div>`).join('')}
+          </div>
+        </div>` : '';
+
+      // Running Dynamics
+      const dynamics = [];
+      if (a.averageRunningCadenceInStepsPerMinute) dynamics.push({ label: 'Cadence', val: Math.round(a.averageRunningCadenceInStepsPerMinute), unit: 'spm' });
+      if (a.avgStrideLength) dynamics.push({ label: 'Stride', val: (a.avgStrideLength / 100).toFixed(2), unit: 'm' });
+      if (a.avgGroundContactTime) dynamics.push({ label: 'GCT', val: Math.round(a.avgGroundContactTime), unit: 'ms' });
+      if (a.avgVerticalOscillation) dynamics.push({ label: 'Vert Osc', val: a.avgVerticalOscillation.toFixed(1), unit: 'cm' });
+      const dynamicsHtml = dynamics.length ? `
+        <div class="run-section">
+          <div class="run-section-title">Running Dynamics</div>
+          <div class="run-grid">
+            ${dynamics.map(d => `<div>
+              <div class="activity-stat-label">${d.label}</div>
+              <div class="activity-stat-value" style="font-size:0.9rem">${d.val} <span class="stat-unit">${d.unit}</span></div>
+            </div>`).join('')}
+          </div>
+        </div>` : '';
+
+      // HR Zones
+      const hasZones = (a.hrTimeInZone_1 || 0) + (a.hrTimeInZone_2 || 0) + (a.hrTimeInZone_3 || 0) + (a.hrTimeInZone_4 || 0) + (a.hrTimeInZone_5 || 0) > 0;
+      const zonesHtml = hasZones ? `
+        <div class="run-section">
+          <div class="run-section-title">HR Zones</div>
+          <div class="hr-zones">${renderHrZones(a)}</div>
+        </div>` : '';
+
+      // Training Load & VO2 Max
+      const training = [];
+      if (a.vO2MaxValue) training.push({ label: 'VO2 Max', val: a.vO2MaxValue, unit: '' });
+      if (a.aerobicTrainingEffect) training.push({ label: 'Aerobic TE', val: a.aerobicTrainingEffect.toFixed(1), unit: '' });
+      if (a.activityTrainingLoad) training.push({ label: 'Load', val: Math.round(a.activityTrainingLoad), unit: '' });
+      if (a.elevationGain) training.push({ label: 'Elev Gain', val: Math.round(a.elevationGain), unit: 'm' });
+      if (a.avgPower) training.push({ label: 'Avg Power', val: Math.round(a.avgPower), unit: 'W' });
+      if (a.calories) training.push({ label: 'Calories', val: Math.round(a.calories), unit: '' });
+      const trainingHtml = training.length ? `
+        <div class="run-section">
+          <div class="run-section-title">Training</div>
+          <div class="run-grid">
+            ${training.map(t => `<div>
+              <div class="activity-stat-label">${t.label}</div>
+              <div class="activity-stat-value" style="font-size:0.9rem">${t.val} <span class="stat-unit">${t.unit}</span></div>
+            </div>`).join('')}
+          </div>
+        </div>` : '';
+
+      runExtras = splitsHtml + dynamicsHtml + zonesHtml + trainingHtml;
+    }
 
     return `
       <div class="activity">
@@ -411,7 +570,8 @@ async function init() {
           <span class="activity-type">${typeKey}</span>
         </div>
         <div class="activity-date">${formatDateTime(a.startTimeLocal)}</div>
-        <div class="activity-stats">${statsHtml}</div>
+        <div class="activity-stats">${coreStats}</div>
+        ${runExtras}
       </div>
     `;
   }).join('');
