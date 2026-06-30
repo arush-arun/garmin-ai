@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garmin Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e1e4ed;
+    --muted: #8b8fa3;
+    --accent: #6c8cff;
+    --green: #4ade80;
+    --orange: #fb923c;
+    --red: #f87171;
+    --purple: #a78bfa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+  }
+  .snapshot {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  .stat-unit {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    margin-top: 8px;
+  }
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .chart-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .chart-wrapper {
+    position: relative;
+    height: 180px;
+  }
+  .activity {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .activity-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .activity-type {
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(108,140,255,0.12);
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-transform: capitalize;
+  }
+  .activity-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .activity-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .activity-stat-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .activity-stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .no-data {
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 16px;
+    font-size: 0.9rem;
+  }
+  .color-green { color: var(--green); }
+  .color-accent { color: var(--accent); }
+  .color-orange { color: var(--orange); }
+  .color-red { color: var(--red); }
+  .color-purple { color: var(--purple); }
+</style>
+</head>
+<body>
+
+<h1>Garmin Dashboard</h1>
+<p class="subtitle" id="syncTime">Loading...</p>
+
+<div id="snapshot" class="snapshot"></div>
+
+<p class="section-title">Trends</p>
+<div class="chart-card">
+  <h3>HRV &amp; Resting HR</h3>
+  <div class="chart-wrapper"><canvas id="hrvChart"></canvas></div>
+</div>
+<div class="chart-card">
+  <h3>Sleep</h3>
+  <div class="chart-wrapper"><canvas id="sleepChart"></canvas></div>
+</div>
+<div class="chart-card">
+  <h3>Steps</h3>
+  <div class="chart-wrapper"><canvas id="stepsChart"></canvas></div>
+</div>
+
+<p class="section-title">Recent Activities</p>
+<div id="activities"></div>
+
+<script>
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: true, position: 'top', labels: { color: '#8b8fa3', boxWidth: 10, font: { size: 11 } } }
+  },
+  scales: {
+    x: { ticks: { color: '#8b8fa3', font: { size: 10 } }, grid: { color: '#2a2d3a' } },
+    y: { ticks: { color: '#8b8fa3', font: { size: 10 } }, grid: { color: '#2a2d3a' } }
+  }
+};
+
+function formatPace(speedMs) {
+  if (!speedMs || speedMs <= 0) return '--';
+  const paceSeconds = 1000 / speedMs;
+  const mins = Math.floor(paceSeconds / 60);
+  const secs = Math.round(paceSeconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+function formatDuration(seconds) {
+  if (!seconds) return '--';
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.round(seconds % 60);
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m ${s}s`;
+}
+
+function formatDistance(meters) {
+  if (!meters) return '--';
+  return (meters / 1000).toFixed(2);
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+
+function formatDateTime(dateStr) {
+  const d = new Date(dateStr.replace(' ', 'T'));
+  return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+}
+
+async function init() {
+  let data;
+  try {
+    const resp = await fetch('data.json');
+    if (!resp.ok) throw new Error('Failed to load data');
+    data = await resp.json();
+  } catch (e) {
+    document.getElementById('syncTime').textContent = 'Could not load data.json';
+    document.getElementById('snapshot').innerHTML = '<div class="no-data" style="grid-column:1/-1">No data available. Run the sync script first.</div>';
+    return;
+  }
+
+  // Sync time
+  const syncDate = new Date(data.last_sync);
+  document.getElementById('syncTime').textContent = `Last sync: ${syncDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' })}`;
+
+  // Snapshot — most recent wellness day
+  const wellness = data.wellness || [];
+  const sorted = [...wellness].sort((a, b) => b.date.localeCompare(a.date));
+  const today = sorted[0];
+
+  if (today) {
+    document.getElementById('snapshot').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">HRV</div>
+        <div class="stat-value color-accent">${today.hrvOvernight ?? '--'} <span class="stat-unit">ms</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Resting HR</div>
+        <div class="stat-value color-red">${today.restingHR ?? '--'} <span class="stat-unit">bpm</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Sleep</div>
+        <div class="stat-value color-purple">${today.sleepHours ?? '--'} <span class="stat-unit">hrs</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Sleep Score</div>
+        <div class="stat-value color-green">${today.sleepScore ?? '--'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Steps</div>
+        <div class="stat-value color-orange">${today.steps != null ? today.steps.toLocaleString() : '--'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Date</div>
+        <div class="stat-value" style="font-size:1rem; padding-top:4px">${formatDate(today.date)}</div>
+      </div>
+    `;
+  }
+
+  // Charts — data chronological (oldest first)
+  const chronological = [...sorted].reverse();
+  const labels = chronological.map(w => formatDate(w.date));
+
+  // HRV + Resting HR
+  new Chart(document.getElementById('hrvChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'HRV (ms)',
+          data: chronological.map(w => w.hrvOvernight),
+          borderColor: '#6c8cff',
+          backgroundColor: 'rgba(108,140,255,0.1)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 4,
+          pointBackgroundColor: '#6c8cff',
+          yAxisID: 'y'
+        },
+        {
+          label: 'Resting HR',
+          data: chronological.map(w => w.restingHR),
+          borderColor: '#f87171',
+          backgroundColor: 'rgba(248,113,113,0.1)',
+          tension: 0.3,
+          fill: false,
+          pointRadius: 4,
+          pointBackgroundColor: '#f87171',
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        ...chartDefaults.scales,
+        y: { ...chartDefaults.scales.y, position: 'left', title: { display: false } },
+        y1: { ...chartDefaults.scales.y, position: 'right', grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+
+  // Sleep
+  new Chart(document.getElementById('sleepChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Hours',
+          data: chronological.map(w => w.sleepHours),
+          backgroundColor: 'rgba(167,139,250,0.6)',
+          borderColor: '#a78bfa',
+          borderWidth: 1,
+          borderRadius: 4,
+          yAxisID: 'y'
+        },
+        {
+          label: 'Score',
+          data: chronological.map(w => w.sleepScore),
+          type: 'line',
+          borderColor: '#4ade80',
+          backgroundColor: 'rgba(74,222,128,0.1)',
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#4ade80',
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        ...chartDefaults.scales,
+        y: { ...chartDefaults.scales.y, position: 'left', min: 0, max: 12 },
+        y1: { ...chartDefaults.scales.y, position: 'right', min: 0, max: 100, grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+
+  // Steps
+  new Chart(document.getElementById('stepsChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Steps',
+        data: chronological.map(w => w.steps),
+        backgroundColor: 'rgba(251,146,60,0.6)',
+        borderColor: '#fb923c',
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: chartDefaults
+  });
+
+  // Activities
+  const activities = data.activities || [];
+  const actContainer = document.getElementById('activities');
+  if (activities.length === 0) {
+    actContainer.innerHTML = '<div class="no-data">No recent activities</div>';
+    return;
+  }
+
+  actContainer.innerHTML = activities.map(a => {
+    const typeKey = a.activityType?.typeKey || 'activity';
+    const isRun = typeKey === 'running';
+    const statsHtml = isRun ? `
+      <div>
+        <div class="activity-stat-label">Distance</div>
+        <div class="activity-stat-value">${formatDistance(a.distance)} <span class="stat-unit">km</span></div>
+      </div>
+      <div>
+        <div class="activity-stat-label">Pace</div>
+        <div class="activity-stat-value">${formatPace(a.averageSpeed)} <span class="stat-unit">/km</span></div>
+      </div>
+      <div>
+        <div class="activity-stat-label">Avg HR</div>
+        <div class="activity-stat-value">${a.averageHR ?? '--'} <span class="stat-unit">bpm</span></div>
+      </div>
+    ` : `
+      <div>
+        <div class="activity-stat-label">Duration</div>
+        <div class="activity-stat-value">${formatDuration(a.duration)}</div>
+      </div>
+      <div>
+        <div class="activity-stat-label">Avg HR</div>
+        <div class="activity-stat-value">${a.averageHR ?? '--'} <span class="stat-unit">bpm</span></div>
+      </div>
+      <div>
+        <div class="activity-stat-label">Calories</div>
+        <div class="activity-stat-value">${a.calories ?? '--'}</div>
+      </div>
+    `;
+
+    const durationLine = isRun ? `${formatDistance(a.distance)} km in ${formatDuration(a.duration)}` : formatDuration(a.duration);
+
+    return `
+      <div class="activity">
+        <div class="activity-header">
+          <span class="activity-name">${a.activityName || typeKey}</span>
+          <span class="activity-type">${typeKey}</span>
+        </div>
+        <div class="activity-date">${formatDateTime(a.startTimeLocal)}</div>
+        <div class="activity-stats">${statsHtml}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+init();
+</script>
+</body>
+</html>
