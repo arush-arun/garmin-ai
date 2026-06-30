@@ -1,0 +1,35 @@
+name: Sync Garmin Data
+
+on:
+  schedule:
+    - cron: "0 20 * * *"  # 6am AEST (UTC+10)
+  workflow_dispatch:       # manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore token from secret
+        run: |
+          mkdir -p ~/.garmin-ai/tokens
+          echo "${{ secrets.GARMIN_TOKEN_DATA }}" | base64 -d > ~/.garmin-ai/tokens/garmin_tokens.json
+
+      - name: Sync last 3 days
+        run: python sync_garmin.py --days 3 --sink files --out ./garmin
+
+      - name: Commit and push data
+        run: |
+          git config user.name "garmin-sync[bot]"
+          git config user.email "garmin-sync[bot]@users.noreply.github.com"
+          git add garmin/
+          git diff --cached --quiet || git commit -m "Sync Garmin data $(date -u +%Y-%m-%d)"
+          git push
