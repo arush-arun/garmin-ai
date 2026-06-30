@@ -26,8 +26,8 @@ jobs:
           mkdir -p ~/.garmin-ai/tokens
           echo "${{ secrets.GARMIN_TOKEN_DATA }}" | base64 -d > ~/.garmin-ai/tokens/garmin_tokens.json
 
-      - name: Sync last 3 days
-        run: python sync_garmin.py --days 3 --sink files --out ./garmin
+      - name: Sync last 14 days
+        run: python sync_garmin.py --days 14 --sink files --out ./garmin
 
       - name: Copy data to dashboard
         run: |

@@ -226,6 +226,16 @@
   <div class="chart-wrapper"><canvas id="stepsChart"></canvas></div>
 </div>
 
+<p class="section-title">Run Comparison</p>
+<div class="chart-card">
+  <h3>Avg HR per KM (Last 5 Runs)</h3>
+  <div class="chart-wrapper" style="height:220px"><canvas id="runHrChart"></canvas></div>
+</div>
+<div class="chart-card">
+  <h3>Pace per KM (Last 5 Runs)</h3>
+  <div class="chart-wrapper" style="height:220px"><canvas id="runPaceChart"></canvas></div>
+</div>
+
 <p class="section-title">Recent Activities</p>
 <div id="activities"></div>
 
@@ -457,8 +467,87 @@ async function init() {
     options: chartDefaults
   });
 
+  // Run Comparison Charts
+  const allActivities = data.activities || [];
+  const runs = allActivities
+    .filter(a => a.activityType?.typeKey === 'running' && a.kmSplits?.length > 1)
+    .slice(0, 5);
+
+  if (runs.length > 0) {
+    const runColors = ['#6c8cff', '#4ade80', '#fb923c', '#f87171', '#a78bfa'];
+    const maxKm = Math.max(...runs.map(r => r.kmSplits.filter(s => s.distance >= 900).length));
+    const kmLabels = Array.from({length: maxKm}, (_, i) => `${i + 1}`);
+
+    // HR per KM chart
+    new Chart(document.getElementById('runHrChart'), {
+      type: 'line',
+      data: {
+        labels: kmLabels,
+        datasets: runs.map((r, i) => {
+          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
+          return {
+            label: formatDate(r.startTimeLocal.slice(0, 10)),
+            data: fullKmSplits.map(s => s.averageHR),
+            borderColor: runColors[i],
+            backgroundColor: runColors[i] + '18',
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: runColors[i],
+            borderWidth: 2,
+          };
+        })
+      },
+      options: {
+        ...chartDefaults,
+        scales: {
+          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
+          y: { ...chartDefaults.scales.y, title: { display: true, text: 'HR (bpm)', color: '#8b8fa3', font: { size: 10 } } }
+        }
+      }
+    });
+
+    // Pace per KM chart
+    new Chart(document.getElementById('runPaceChart'), {
+      type: 'line',
+      data: {
+        labels: kmLabels,
+        datasets: runs.map((r, i) => {
+          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
+          return {
+            label: formatDate(r.startTimeLocal.slice(0, 10)),
+            data: fullKmSplits.map(s => s.averageSpeed > 0 ? (1000 / s.averageSpeed / 60) : null),
+            borderColor: runColors[i],
+            backgroundColor: runColors[i] + '18',
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: runColors[i],
+            borderWidth: 2,
+          };
+        })
+      },
+      options: {
+        ...chartDefaults,
+        scales: {
+          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
+          y: {
+            ...chartDefaults.scales.y,
+            reverse: true,
+            title: { display: true, text: 'Pace (min/km)', color: '#8b8fa3', font: { size: 10 } },
+            ticks: {
+              ...chartDefaults.scales.y.ticks,
+              callback: v => { const m = Math.floor(v); const s = Math.round((v - m) * 60); return `${m}:${s.toString().padStart(2, '0')}`; }
+            }
+          }
+        }
+      }
+    });
+  } else {
+    document.getElementById('runHrChart').parentElement.parentElement.innerHTML = '<div class="no-data">No runs with split data yet</div>';
+    document.getElementById('runPaceChart').parentElement.parentElement.innerHTML = '';
+  }
+
   // Activities
-  const activities = data.activities || [];
+  const activities = allActivities;
   const actContainer = document.getElementById('activities');
   if (activities.length === 0) {
     actContainer.innerHTML = '<div class="no-data">No recent activities</div>';

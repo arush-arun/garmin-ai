@@ -60,6 +60,31 @@ def get_client() -> Garmin:
 
 # ── data fetching ─────────────────────────────────────────────────────────────
 
+def fetch_km_splits(garmin: Garmin, activity_id) -> list[dict]:
+    """Fetch per-km split data for an activity. Returns simplified list."""
+    try:
+        splits = garmin.get_activity_splits(str(activity_id))
+        laps = splits.get("lapDTOs", [])
+        result = []
+        for lap in laps:
+            result.append({
+                "km": lap.get("lapIndex"),
+                "distance": lap.get("distance"),
+                "duration": lap.get("duration"),
+                "averageHR": lap.get("averageHR"),
+                "maxHR": lap.get("maxHR"),
+                "averageSpeed": lap.get("averageSpeed"),
+                "averageCadence": lap.get("averageRunCadence"),
+                "elevationGain": lap.get("elevationGain"),
+                "elevationLoss": lap.get("elevationLoss"),
+                "averagePower": lap.get("averagePower"),
+            })
+        return result
+    except Exception as e:
+        print(f"  Warning: could not fetch splits for {activity_id}: {e}")
+        return []
+
+
 def fetch_activities(garmin: Garmin, days: int) -> list[dict]:
     cutoff = datetime.now() - timedelta(days=days)
     activities = garmin.get_activities(0, 100)  # last 100
@@ -72,6 +97,13 @@ def fetch_activities(garmin: Garmin, days: int) -> list[dict]:
             continue
         if dt.replace(tzinfo=None) < cutoff:
             break
+        # Fetch per-km splits for running activities
+        type_key = act.get("activityType", {}).get("typeKey", "")
+        if type_key in ("running", "trail_running", "treadmill_running"):
+            act_id = act.get("activityId")
+            if act_id:
+                print(f"  Fetching splits for {act.get('activityName', type_key)} ...")
+                act["kmSplits"] = fetch_km_splits(garmin, act_id)
         result.append(act)
     return result
 
