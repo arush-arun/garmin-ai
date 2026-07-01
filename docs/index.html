@@ -332,7 +332,7 @@ async function init() {
 
   // Sync time
   const syncDate = new Date(data.last_sync);
-  document.getElementById('syncTime').textContent = `Last sync: ${syncDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' })}`;
+  document.getElementById('syncTime').textContent = `Last sync: ${syncDate.toLocaleString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'Australia/Brisbane' })}`;
 
   // Snapshot — most recent wellness day
   const wellness = data.wellness || [];
