@@ -86,6 +86,19 @@ def fetch_km_splits(garmin: Garmin, activity_id) -> list[dict]:
         return []
 
 
+STRIP_FIELDS = {
+    "ownerDisplayName", "ownerFullName", "ownerId",
+    "ownerProfileImageUrlSmall", "ownerProfileImageUrlMedium", "ownerProfileImageUrlLarge",
+    "startLatitude", "startLongitude", "endLatitude", "endLongitude",
+    "userRoles",
+}
+
+
+def strip_sensitive(act: dict) -> dict:
+    """Remove PII and location data from an activity."""
+    return {k: v for k, v in act.items() if k not in STRIP_FIELDS}
+
+
 def fetch_activities(garmin: Garmin, days: int) -> list[dict]:
     cutoff = datetime.now() - timedelta(days=days)
     activities = garmin.get_activities(0, 100)  # last 100
@@ -105,7 +118,7 @@ def fetch_activities(garmin: Garmin, days: int) -> list[dict]:
             if act_id:
                 print(f"  Fetching splits for {act.get('activityName', type_key)} ...")
                 act["kmSplits"] = fetch_km_splits(garmin, act_id)
-        result.append(act)
+        result.append(strip_sensitive(act))
     return result
 
 
