@@ -12,7 +12,7 @@ import argparse
 import json
 import os
 import sys
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from garminconnect import Garmin
@@ -274,7 +274,7 @@ def write_files(activities: list[dict], wellness_days: list[dict], out_dir: Path
         existing_acts[a.get("activityId")] = a
 
     combined = {
-        "last_sync": datetime.now().isoformat(),
+        "last_sync": datetime.now(timezone.utc).isoformat(),
         "wellness": sorted(existing_wellness.values(), key=lambda x: x["date"], reverse=True),
         "activities": sorted(existing_acts.values(),
                              key=lambda x: x.get("startTimeLocal", ""), reverse=True),
