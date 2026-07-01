@@ -235,6 +235,14 @@
   <h3>Pace per KM (Last 5 Runs)</h3>
   <div class="chart-wrapper" style="height:220px"><canvas id="runPaceChart"></canvas></div>
 </div>
+<div class="chart-card">
+  <h3>Cadence per KM (Last 5 Runs)</h3>
+  <div class="chart-wrapper" style="height:220px"><canvas id="runCadenceChart"></canvas></div>
+</div>
+<div class="chart-card">
+  <h3>Grade-Adjusted Pace per KM (Last 5 Runs)</h3>
+  <div class="chart-wrapper" style="height:220px"><canvas id="runGapChart"></canvas></div>
+</div>
 
 <p class="section-title">Recent Activities</p>
 <div id="activities"></div>
@@ -541,9 +549,77 @@ async function init() {
         }
       }
     });
+    // Cadence per KM chart
+    new Chart(document.getElementById('runCadenceChart'), {
+      type: 'line',
+      data: {
+        labels: kmLabels,
+        datasets: runs.map((r, i) => {
+          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
+          return {
+            label: formatDate(r.startTimeLocal.slice(0, 10)),
+            data: fullKmSplits.map(s => s.averageCadence),
+            borderColor: runColors[i],
+            backgroundColor: runColors[i] + '18',
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: runColors[i],
+            borderWidth: 2,
+          };
+        })
+      },
+      options: {
+        ...chartDefaults,
+        scales: {
+          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
+          y: { ...chartDefaults.scales.y, title: { display: true, text: 'Cadence (spm)', color: '#8b8fa3', font: { size: 10 } } }
+        }
+      }
+    });
+
+    // Grade-Adjusted Pace per KM chart
+    new Chart(document.getElementById('runGapChart'), {
+      type: 'line',
+      data: {
+        labels: kmLabels,
+        datasets: runs.map((r, i) => {
+          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
+          return {
+            label: formatDate(r.startTimeLocal.slice(0, 10)),
+            data: fullKmSplits.map(s => {
+              const gap = s.avgGradeAdjustedSpeed || s.averageSpeed;
+              return gap > 0 ? (1000 / gap / 60) : null;
+            }),
+            borderColor: runColors[i],
+            backgroundColor: runColors[i] + '18',
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: runColors[i],
+            borderWidth: 2,
+          };
+        })
+      },
+      options: {
+        ...chartDefaults,
+        scales: {
+          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
+          y: {
+            ...chartDefaults.scales.y,
+            reverse: true,
+            title: { display: true, text: 'GAP (min/km)', color: '#8b8fa3', font: { size: 10 } },
+            ticks: {
+              ...chartDefaults.scales.y.ticks,
+              callback: v => { const m = Math.floor(v); const s = Math.round((v - m) * 60); return `${m}:${s.toString().padStart(2, '0')}`; }
+            }
+          }
+        }
+      }
+    });
   } else {
     document.getElementById('runHrChart').parentElement.parentElement.innerHTML = '<div class="no-data">No runs with split data yet</div>';
     document.getElementById('runPaceChart').parentElement.parentElement.innerHTML = '';
+    document.getElementById('runCadenceChart').parentElement.parentElement.innerHTML = '';
+    document.getElementById('runGapChart').parentElement.parentElement.innerHTML = '';
   }
 
   // Activities

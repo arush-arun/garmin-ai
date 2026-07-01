@@ -1,5 +1,5 @@
 {
-  "last_sync": "2026-07-01T00:16:53.460876+00:00",
+  "last_sync": "2026-07-01T00:26:36.495619+00:00",
   "wellness": [
     {
       "restingHR": 56,
@@ -562,15 +562,15 @@
       "endTimeGMT": "2026-06-30 21:25:23",
       "qualifyingDive": false,
       "activityUUID": "a92fbd44-0f2f-4a40-b8ae-0962488c6f90",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false,
       "kmSplits": [
         {
           "km": 1,
@@ -582,7 +582,8 @@
           "averageCadence": 164.5,
           "elevationGain": 8.0,
           "elevationLoss": 21.0,
-          "averagePower": 231.0
+          "averagePower": 231.0,
+          "avgGradeAdjustedSpeed": 2.0739998817443848
         },
         {
           "km": 2,
@@ -594,7 +595,8 @@
           "averageCadence": 169.21875,
           "elevationGain": 3.0,
           "elevationLoss": 10.0,
-          "averagePower": 257.0
+          "averagePower": 257.0,
+          "avgGradeAdjustedSpeed": 2.315999984741211
         },
         {
           "km": 3,
@@ -606,7 +608,8 @@
           "averageCadence": 168.59375,
           "elevationGain": 3.0,
           "elevationLoss": 3.0,
-          "averagePower": 271.0
+          "averagePower": 271.0,
+          "avgGradeAdjustedSpeed": 2.4159998893737793
         },
         {
           "km": 4,
@@ -618,7 +621,8 @@
           "averageCadence": 168.875,
           "elevationGain": 6.0,
           "elevationLoss": 0.0,
-          "averagePower": 256.0
+          "averagePower": 256.0,
+          "avgGradeAdjustedSpeed": 2.234999895095825
         },
         {
           "km": 5,
@@ -630,7 +634,8 @@
           "averageCadence": 165.9375,
           "elevationGain": 22.0,
           "elevationLoss": 10.0,
-          "averagePower": 267.0
+          "averagePower": 267.0,
+          "avgGradeAdjustedSpeed": 2.2109999656677246
         },
         {
           "km": 6,
@@ -642,7 +647,8 @@
           "averageCadence": 164.0625,
           "elevationGain": 3.0,
           "elevationLoss": 0.0,
-          "averagePower": 277.0
+          "averagePower": 277.0,
+          "avgGradeAdjustedSpeed": 2.1549999713897705
         }
       ]
     },
@@ -850,15 +856,15 @@
       "endTimeGMT": "2026-06-27 22:18:23",
       "qualifyingDive": false,
       "activityUUID": "de836e35-52b8-4d01-9a68-81b962918776",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false,
       "kmSplits": [
         {
           "km": 1,
@@ -870,7 +876,8 @@
           "averageCadence": 164.40625,
           "elevationGain": 24.0,
           "elevationLoss": 9.0,
-          "averagePower": 295.0
+          "averagePower": 295.0,
+          "avgGradeAdjustedSpeed": 2.5950000286102295
         },
         {
           "km": 2,
@@ -882,7 +889,8 @@
           "averageCadence": 173.109375,
           "elevationGain": 11.0,
           "elevationLoss": 12.0,
-          "averagePower": 301.0
+          "averagePower": 301.0,
+          "avgGradeAdjustedSpeed": 2.6840000152587886
         },
         {
           "km": 3,
@@ -894,7 +902,8 @@
           "averageCadence": 168.59375,
           "elevationGain": 6.0,
           "elevationLoss": 25.0,
-          "averagePower": 274.0
+          "averagePower": 274.0,
+          "avgGradeAdjustedSpeed": 2.5209999084472656
         },
         {
           "km": 4,
@@ -906,7 +915,8 @@
           "averageCadence": 161.609375,
           "elevationGain": 0.0,
           "elevationLoss": 17.0,
-          "averagePower": 268.0
+          "averagePower": 268.0,
+          "avgGradeAdjustedSpeed": 2.496000051498413
         },
         {
           "km": 5,
@@ -918,7 +928,8 @@
           "averageCadence": 163.0,
           "elevationGain": 11.0,
           "elevationLoss": 6.0,
-          "averagePower": 293.0
+          "averagePower": 293.0,
+          "avgGradeAdjustedSpeed": 2.5880000591278076
         },
         {
           "km": 6,
@@ -930,7 +941,8 @@
           "averageCadence": 172.484375,
           "elevationGain": 0.0,
           "elevationLoss": 5.0,
-          "averagePower": 293.0
+          "averagePower": 293.0,
+          "avgGradeAdjustedSpeed": 2.7249999046325684
         },
         {
           "km": 7,
@@ -942,7 +954,8 @@
           "averageCadence": 170.078125,
           "elevationGain": 4.0,
           "elevationLoss": 1.0,
-          "averagePower": 288.0
+          "averagePower": 288.0,
+          "avgGradeAdjustedSpeed": 2.571000099182129
         },
         {
           "km": 8,
@@ -954,7 +967,8 @@
           "averageCadence": 168.734375,
           "elevationGain": 1.0,
           "elevationLoss": 5.0,
-          "averagePower": 293.0
+          "averagePower": 293.0,
+          "avgGradeAdjustedSpeed": 2.6510000228881836
         },
         {
           "km": 9,
@@ -966,7 +980,8 @@
           "averageCadence": 151.21875,
           "elevationGain": 28.0,
           "elevationLoss": 0.0,
-          "averagePower": 275.0
+          "averagePower": 275.0,
+          "avgGradeAdjustedSpeed": 2.3499999046325684
         },
         {
           "km": 10,
@@ -978,7 +993,8 @@
           "averageCadence": 163.265625,
           "elevationGain": 14.0,
           "elevationLoss": 10.0,
-          "averagePower": 288.0
+          "averagePower": 288.0,
+          "avgGradeAdjustedSpeed": 2.5450000762939453
         },
         {
           "km": 11,
@@ -990,7 +1006,8 @@
           "averageCadence": 167.1875,
           "elevationGain": 15.0,
           "elevationLoss": 8.0,
-          "averagePower": 300.0
+          "averagePower": 300.0,
+          "avgGradeAdjustedSpeed": 2.5209999084472656
         },
         {
           "km": 12,
@@ -1002,7 +1019,8 @@
           "averageCadence": 156.84375,
           "elevationGain": 11.0,
           "elevationLoss": 4.0,
-          "averagePower": 288.0
+          "averagePower": 288.0,
+          "avgGradeAdjustedSpeed": 2.5050001144409175
         },
         {
           "km": 13,
@@ -1014,7 +1032,8 @@
           "averageCadence": 159.46875,
           "elevationGain": 0.0,
           "elevationLoss": 23.0,
-          "averagePower": 191.0
+          "averagePower": 191.0,
+          "avgGradeAdjustedSpeed": 1.9040000438690186
         }
       ]
     },
@@ -1143,15 +1162,15 @@
       "endTimeGMT": "2026-06-26 22:08:20",
       "qualifyingDive": false,
       "activityUUID": "6325adda-d3d7-4089-b9ef-33bc86ca1131",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
-      "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false
+      "atpActivity": false
     },
     {
       "activityId": 23379822008,
@@ -1356,15 +1375,15 @@
       "endTimeGMT": "2026-06-25 21:41:14",
       "qualifyingDive": false,
       "activityUUID": "278c7aff-170f-4c78-afa3-9b1abb7ca7d5",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false,
       "kmSplits": [
         {
           "km": 1,
@@ -1376,7 +1395,8 @@
           "averageCadence": 155.71875,
           "elevationGain": 11.0,
           "elevationLoss": 22.0,
-          "averagePower": 235.0
+          "averagePower": 235.0,
+          "avgGradeAdjustedSpeed": 2.187999963760376
         },
         {
           "km": 2,
@@ -1388,7 +1408,8 @@
           "averageCadence": 169.609375,
           "elevationGain": 2.0,
           "elevationLoss": 9.0,
-          "averagePower": 265.0
+          "averagePower": 265.0,
+          "avgGradeAdjustedSpeed": 2.4200000762939453
         },
         {
           "km": 3,
@@ -1400,7 +1421,8 @@
           "averageCadence": 169.78125,
           "elevationGain": 2.0,
           "elevationLoss": 5.0,
-          "averagePower": 266.0
+          "averagePower": 266.0,
+          "avgGradeAdjustedSpeed": 2.4059998989105225
         },
         {
           "km": 4,
@@ -1412,7 +1434,8 @@
           "averageCadence": 170.171875,
           "elevationGain": 0.0,
           "elevationLoss": 1.0,
-          "averagePower": 282.0
+          "averagePower": 282.0,
+          "avgGradeAdjustedSpeed": 2.5320000648498535
         },
         {
           "km": 5,
@@ -1424,7 +1447,8 @@
           "averageCadence": 165.078125,
           "elevationGain": 4.0,
           "elevationLoss": 4.0,
-          "averagePower": 290.0
+          "averagePower": 290.0,
+          "avgGradeAdjustedSpeed": 2.559999942779541
         },
         {
           "km": 6,
@@ -1436,7 +1460,8 @@
           "averageCadence": 164.953125,
           "elevationGain": 8.0,
           "elevationLoss": 1.0,
-          "averagePower": 298.0
+          "averagePower": 298.0,
+          "avgGradeAdjustedSpeed": 2.565999984741211
         },
         {
           "km": 7,
@@ -1448,7 +1473,8 @@
           "averageCadence": 155.15625,
           "elevationGain": 24.0,
           "elevationLoss": 11.0,
-          "averagePower": 295.0
+          "averagePower": 295.0,
+          "avgGradeAdjustedSpeed": 2.5199999809265137
         },
         {
           "km": 8,
@@ -1460,7 +1486,8 @@
           "averageCadence": 160.71875,
           "elevationGain": 2.0,
           "elevationLoss": 0.0,
-          "averagePower": 328.0
+          "averagePower": 328.0,
+          "avgGradeAdjustedSpeed": 2.6429998874664307
         }
       ]
     },
@@ -1593,15 +1620,15 @@
       "endTimeGMT": "2026-06-25 02:41:38",
       "qualifyingDive": false,
       "activityUUID": "c5734436-dca3-448f-80e0-4bbb1801c8a4",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
-      "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false
+      "atpActivity": false
     },
     {
       "activityId": 23356866005,
@@ -1806,15 +1833,15 @@
       "endTimeGMT": "2026-06-23 21:25:09",
       "qualifyingDive": false,
       "activityUUID": "77c5bb0d-0669-4bc3-a957-5358992a8a49",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false,
       "kmSplits": [
         {
           "km": 1,
@@ -1826,7 +1853,8 @@
           "averageCadence": 160.515625,
           "elevationGain": 9.0,
           "elevationLoss": 21.0,
-          "averagePower": 253.0
+          "averagePower": 253.0,
+          "avgGradeAdjustedSpeed": 2.306999921798706
         },
         {
           "km": 2,
@@ -1838,7 +1866,8 @@
           "averageCadence": 171.40625,
           "elevationGain": 2.0,
           "elevationLoss": 11.0,
-          "averagePower": 267.0
+          "averagePower": 267.0,
+          "avgGradeAdjustedSpeed": 2.444999933242798
         },
         {
           "km": 3,
@@ -1850,7 +1879,8 @@
           "averageCadence": 172.65625,
           "elevationGain": 4.0,
           "elevationLoss": 5.0,
-          "averagePower": 308.0
+          "averagePower": 308.0,
+          "avgGradeAdjustedSpeed": 2.7750000953674316
         },
         {
           "km": 4,
@@ -1862,7 +1892,8 @@
           "averageCadence": 170.203125,
           "elevationGain": 10.0,
           "elevationLoss": 2.0,
-          "averagePower": 317.0
+          "averagePower": 317.0,
+          "avgGradeAdjustedSpeed": 2.7330000400543213
         },
         {
           "km": 5,
@@ -1874,7 +1905,8 @@
           "averageCadence": 167.796875,
           "elevationGain": 23.0,
           "elevationLoss": 9.0,
-          "averagePower": 337.0
+          "averagePower": 337.0,
+          "avgGradeAdjustedSpeed": 2.811000108718872
         },
         {
           "km": 6,
@@ -1886,7 +1918,8 @@
           "averageCadence": 150.640625,
           "elevationGain": 3.0,
           "elevationLoss": 0.0,
-          "averagePower": 326.0
+          "averagePower": 326.0,
+          "avgGradeAdjustedSpeed": 2.686000108718872
         }
       ]
     },
@@ -2061,15 +2094,15 @@
       "endTimeGMT": "2026-06-20 21:33:25",
       "qualifyingDive": false,
       "activityUUID": "ca284de8-dc23-485a-8283-8e61d9523a25",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false,
       "kmSplits": [
         {
           "km": 1,
@@ -2081,7 +2114,8 @@
           "averageCadence": 166.875,
           "elevationGain": 3.0,
           "elevationLoss": 8.0,
-          "averagePower": 280.0
+          "averagePower": 280.0,
+          "avgGradeAdjustedSpeed": 2.566999912261963
         },
         {
           "km": 2,
@@ -2093,7 +2127,8 @@
           "averageCadence": 171.953125,
           "elevationGain": 0.0,
           "elevationLoss": 4.0,
-          "averagePower": 280.0
+          "averagePower": 280.0,
+          "avgGradeAdjustedSpeed": 2.5620000362396236
         },
         {
           "km": 3,
@@ -2105,7 +2140,8 @@
           "averageCadence": 170.28125,
           "elevationGain": 2.0,
           "elevationLoss": 1.0,
-          "averagePower": 278.0
+          "averagePower": 278.0,
+          "avgGradeAdjustedSpeed": 2.5109999179840083
         },
         {
           "km": 4,
@@ -2117,7 +2153,8 @@
           "averageCadence": 170.046875,
           "elevationGain": 1.0,
           "elevationLoss": 1.0,
-          "averagePower": 282.0
+          "averagePower": 282.0,
+          "avgGradeAdjustedSpeed": 2.561000108718872
         },
         {
           "km": 5,
@@ -2129,7 +2166,8 @@
           "averageCadence": 166.78125,
           "elevationGain": 3.0,
           "elevationLoss": 4.0,
-          "averagePower": 277.0
+          "averagePower": 277.0,
+          "avgGradeAdjustedSpeed": 2.4590001106262207
         },
         {
           "km": 6,
@@ -2141,7 +2179,8 @@
           "averageCadence": 168.0625,
           "elevationGain": 1.0,
           "elevationLoss": 4.0,
-          "averagePower": 302.0
+          "averagePower": 302.0,
+          "avgGradeAdjustedSpeed": 2.677999973297119
         },
         {
           "km": 7,
@@ -2153,7 +2192,8 @@
           "averageCadence": 169.296875,
           "elevationGain": 1.0,
           "elevationLoss": 2.0,
-          "averagePower": 312.0
+          "averagePower": 312.0,
+          "avgGradeAdjustedSpeed": 2.783999919891357
         },
         {
           "km": 8,
@@ -2165,7 +2205,8 @@
           "averageCadence": 168.171875,
           "elevationGain": 4.0,
           "elevationLoss": 1.0,
-          "averagePower": 304.0
+          "averagePower": 304.0,
+          "avgGradeAdjustedSpeed": 2.686000108718872
         },
         {
           "km": 9,
@@ -2177,7 +2218,8 @@
           "averageCadence": 166.65625,
           "elevationGain": 12.0,
           "elevationLoss": 3.0,
-          "averagePower": 302.0
+          "averagePower": 302.0,
+          "avgGradeAdjustedSpeed": 2.618000030517578
         },
         {
           "km": 10,
@@ -2189,7 +2231,8 @@
           "averageCadence": 162.9375,
           "elevationGain": 3.0,
           "elevationLoss": 3.0,
-          "averagePower": 300.0
+          "averagePower": 300.0,
+          "avgGradeAdjustedSpeed": 2.661999940872192
         }
       ]
     },
@@ -2309,15 +2352,15 @@
       "endTimeGMT": "2026-06-20 01:55:32",
       "qualifyingDive": false,
       "activityUUID": "a6ad2e71-6483-4b61-92cf-a84aca7ff15b",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
-      "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false
+      "atpActivity": false
     },
     {
       "activityId": 23300614908,
@@ -2524,15 +2567,15 @@
       "endTimeGMT": "2026-06-19 00:20:43",
       "qualifyingDive": false,
       "activityUUID": "ea7dc817-c0dc-48b1-b086-bbb415337244",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false,
       "kmSplits": [
         {
           "km": 1,
@@ -2544,7 +2587,8 @@
           "averageCadence": 159.203125,
           "elevationGain": 7.0,
           "elevationLoss": 16.0,
-          "averagePower": 240.0
+          "averagePower": 240.0,
+          "avgGradeAdjustedSpeed": 2.1519999504089355
         },
         {
           "km": 2,
@@ -2556,7 +2600,8 @@
           "averageCadence": 165.515625,
           "elevationGain": 10.0,
           "elevationLoss": 1.0,
-          "averagePower": 256.0
+          "averagePower": 256.0,
+          "avgGradeAdjustedSpeed": 2.184000015258789
         },
         {
           "km": 3,
@@ -2568,7 +2613,8 @@
           "averageCadence": 164.96875,
           "elevationGain": 5.0,
           "elevationLoss": 16.0,
-          "averagePower": 256.0
+          "averagePower": 256.0,
+          "avgGradeAdjustedSpeed": 2.265000104904175
         },
         {
           "km": 4,
@@ -2580,7 +2626,8 @@
           "averageCadence": 162.640625,
           "elevationGain": 11.0,
           "elevationLoss": 2.0,
-          "averagePower": 253.0
+          "averagePower": 253.0,
+          "avgGradeAdjustedSpeed": 2.1740000247955322
         },
         {
           "km": 5,
@@ -2592,7 +2639,8 @@
           "averageCadence": 165.3125,
           "elevationGain": 2.0,
           "elevationLoss": 1.0,
-          "averagePower": 256.0
+          "averagePower": 256.0,
+          "avgGradeAdjustedSpeed": 2.263000011444092
         }
       ]
     },
@@ -2725,15 +2773,15 @@
       "endTimeGMT": "2026-06-18 00:52:53",
       "qualifyingDive": false,
       "activityUUID": "4549ee0a-113a-4951-a19d-dcf2f70eec23",
+      "parent": false,
       "decoDive": false,
       "purposeful": false,
       "manualActivity": false,
+      "pr": false,
+      "favorite": false,
       "autoCalcCalories": false,
       "elevationCorrected": false,
-      "atpActivity": false,
-      "favorite": false,
-      "pr": false,
-      "parent": false
+      "atpActivity": false
     },
     {
       "activityId": 23239586477,
@@ -2939,15 +2987,15 @@
       "endTimeGMT": "2026-06-13 22:26:09",
       "qualifyingDive": false,
       "activityUUID": "40f886a3-9d0a-4886-854a-0e6690d7dded",
+      "parent": false,
       "decoDive": false,
-      "elevationCorrected": false,
-      "atpActivity": false,
       "purposeful": false,
       "manualActivity": false,
-      "autoCalcCalories": false,
-      "favorite": false,
       "pr": false,
-      "parent": false,
+      "favorite": false,
+      "autoCalcCalories": false,
+      "elevationCorrected": false,
+      "atpActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -2959,7 +3007,8 @@
           "averageCadence": 164.515625,
           "elevationGain": 3.0,
           "elevationLoss": 10.0,
-          "averagePower": 279.0
+          "averagePower": 279.0,
+          "avgGradeAdjustedSpeed": 2.582999944686889
         },
         {
           "km": 2,
@@ -2971,7 +3020,8 @@
           "averageCadence": 171.015625,
           "elevationGain": 2.0,
           "elevationLoss": 6.0,
-          "averagePower": 293.0
+          "averagePower": 293.0,
+          "avgGradeAdjustedSpeed": 2.694000005722046
         },
         {
           "km": 3,
@@ -2983,7 +3033,8 @@
           "averageCadence": 168.0625,
           "elevationGain": 1.0,
           "elevationLoss": 1.0,
-          "averagePower": 291.0
+          "averagePower": 291.0,
+          "avgGradeAdjustedSpeed": 2.6340000629425044
         },
         {
           "km": 4,
@@ -2995,7 +3046,8 @@
           "averageCadence": 168.203125,
           "elevationGain": 1.0,
           "elevationLoss": 1.0,
-          "averagePower": 289.0
+          "averagePower": 289.0,
+          "avgGradeAdjustedSpeed": 2.6070001125335693
         },
         {
           "km": 5,
@@ -3007,7 +3059,8 @@
           "averageCadence": 165.734375,
           "elevationGain": 2.0,
           "elevationLoss": 4.0,
-          "averagePower": 272.0
+          "averagePower": 272.0,
+          "avgGradeAdjustedSpeed": 2.430999994277954
         },
         {
           "km": 6,
@@ -3019,7 +3072,8 @@
           "averageCadence": 166.859375,
           "elevationGain": 6.0,
           "elevationLoss": 6.0,
-          "averagePower": 287.0
+          "averagePower": 287.0,
+          "avgGradeAdjustedSpeed": 2.559000015258789
         },
         {
           "km": 7,
@@ -3031,7 +3085,8 @@
           "averageCadence": 165.296875,
           "elevationGain": 7.0,
           "elevationLoss": 5.0,
-          "averagePower": 284.0
+          "averagePower": 284.0,
+          "avgGradeAdjustedSpeed": 2.5420000553131104
         },
         {
           "km": 8,
@@ -3043,7 +3098,8 @@
           "averageCadence": 166.28125,
           "elevationGain": 2.0,
           "elevationLoss": 5.0,
-          "averagePower": 282.0
+          "averagePower": 282.0,
+          "avgGradeAdjustedSpeed": 2.5450000762939453
         },
         {
           "km": 9,
@@ -3055,7 +3111,8 @@
           "averageCadence": 158.0,
           "elevationGain": 2.0,
           "elevationLoss": 3.0,
-          "averagePower": 270.0
+          "averagePower": 270.0,
+          "avgGradeAdjustedSpeed": 2.499000072479248
         },
         {
           "km": 10,
@@ -3067,7 +3124,8 @@
           "averageCadence": 168.328125,
           "elevationGain": 3.0,
           "elevationLoss": 1.0,
-          "averagePower": 301.0
+          "averagePower": 301.0,
+          "avgGradeAdjustedSpeed": 2.711999893188476
         },
         {
           "km": 11,
@@ -3079,7 +3137,8 @@
           "averageCadence": 167.5,
           "elevationGain": 5.0,
           "elevationLoss": 3.0,
-          "averagePower": 306.0
+          "averagePower": 306.0,
+          "avgGradeAdjustedSpeed": 2.7060000896453853
         },
         {
           "km": 12,
@@ -3091,7 +3150,8 @@
           "averageCadence": 166.765625,
           "elevationGain": 13.0,
           "elevationLoss": 2.0,
-          "averagePower": 303.0
+          "averagePower": 303.0,
+          "avgGradeAdjustedSpeed": 2.6089999675750732
         },
         {
           "km": 13,
@@ -3103,7 +3163,8 @@
           "averageCadence": 165.4375,
           "elevationGain": 13.0,
           "elevationLoss": 5.0,
-          "averagePower": 290.0
+          "averagePower": 290.0,
+          "avgGradeAdjustedSpeed": 2.5160000324249268
         },
         {
           "km": 14,
@@ -3115,7 +3176,8 @@
           "averageCadence": 157.328125,
           "elevationGain": 0.0,
           "elevationLoss": 7.0,
-          "averagePower": 248.0
+          "averagePower": 248.0,
+          "avgGradeAdjustedSpeed": 2.5350000858306885
         }
       ]
     },
@@ -3235,15 +3297,15 @@
       "endTimeGMT": "2026-06-13 01:48:52",
       "qualifyingDive": false,
       "activityUUID": "4325a05c-77f5-44da-8ddc-cbc285bce30b",
+      "parent": false,
       "decoDive": false,
-      "elevationCorrected": false,
-      "atpActivity": false,
       "purposeful": false,
       "manualActivity": false,
-      "autoCalcCalories": false,
-      "favorite": false,
       "pr": false,
-      "parent": false
+      "favorite": false,
+      "autoCalcCalories": false,
+      "elevationCorrected": false,
+      "atpActivity": false
     },
     {
       "activityId": 23216749053,
@@ -3432,15 +3494,15 @@
       "endTimeGMT": "2026-06-11 21:46:12",
       "qualifyingDive": false,
       "activityUUID": "f47244c4-fb3d-4666-929e-42e9c198591e",
+      "parent": false,
       "decoDive": false,
-      "elevationCorrected": false,
-      "atpActivity": false,
       "purposeful": false,
       "manualActivity": false,
-      "autoCalcCalories": false,
-      "favorite": false,
       "pr": false,
-      "parent": false,
+      "favorite": false,
+      "autoCalcCalories": false,
+      "elevationCorrected": false,
+      "atpActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -3452,7 +3514,8 @@
           "averageCadence": 163.953125,
           "elevationGain": 8.0,
           "elevationLoss": 22.0,
-          "averagePower": 268.0
+          "averagePower": 268.0,
+          "avgGradeAdjustedSpeed": 2.4170000553131104
         },
         {
           "km": 2,
@@ -3464,7 +3527,8 @@
           "averageCadence": 170.078125,
           "elevationGain": 0.0,
           "elevationLoss": 8.0,
-          "averagePower": 266.0
+          "averagePower": 266.0,
+          "avgGradeAdjustedSpeed": 2.437000036239624
         },
         {
           "km": 3,
@@ -3476,7 +3540,8 @@
           "averageCadence": 169.234375,
           "elevationGain": 1.0,
           "elevationLoss": 3.0,
-          "averagePower": 267.0
+          "averagePower": 267.0,
+          "avgGradeAdjustedSpeed": 2.4230000972747803
         },
         {
           "km": 4,
@@ -3488,7 +3553,8 @@
           "averageCadence": 168.015625,
           "elevationGain": 0.0,
           "elevationLoss": 5.0,
-          "averagePower": 282.0
+          "averagePower": 282.0,
+          "avgGradeAdjustedSpeed": 2.556999921798706
         },
         {
           "km": 5,
@@ -3500,7 +3566,8 @@
           "averageCadence": 168.125,
           "elevationGain": 2.0,
           "elevationLoss": 3.0,
-          "averagePower": 289.0
+          "averagePower": 289.0,
+          "avgGradeAdjustedSpeed": 2.578000068664551
         },
         {
           "km": 6,
@@ -3512,7 +3579,8 @@
           "averageCadence": 166.3125,
           "elevationGain": 7.0,
           "elevationLoss": 1.0,
-          "averagePower": 297.0
+          "averagePower": 297.0,
+          "avgGradeAdjustedSpeed": 2.5859999656677246
         },
         {
           "km": 7,
@@ -3524,7 +3592,8 @@
           "averageCadence": 161.3125,
           "elevationGain": 19.0,
           "elevationLoss": 9.0,
-          "averagePower": 298.0
+          "averagePower": 298.0,
+          "avgGradeAdjustedSpeed": 2.559000015258789
         },
         {
           "km": 8,
@@ -3536,7 +3605,8 @@
           "averageCadence": 145.0625,
           "elevationGain": 5.0,
           "elevationLoss": 0.0,
-          "averagePower": 287.0
+          "averagePower": 287.0,
+          "avgGradeAdjustedSpeed": 2.4549999237060547
         }
       ]
     },
@@ -3728,15 +3798,15 @@
       "endTimeGMT": "2026-06-06 22:47:20",
       "qualifyingDive": false,
       "activityUUID": "56c0eb3c-737e-4fa2-955b-9bde569f66b8",
+      "parent": false,
       "decoDive": false,
-      "elevationCorrected": false,
-      "atpActivity": false,
       "purposeful": false,
       "manualActivity": false,
-      "autoCalcCalories": false,
-      "favorite": false,
       "pr": true,
-      "parent": false,
+      "favorite": false,
+      "autoCalcCalories": false,
+      "elevationCorrected": false,
+      "atpActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -3748,7 +3818,8 @@
           "averageCadence": 168.359375,
           "elevationGain": 9.0,
           "elevationLoss": 1.0,
-          "averagePower": 284.0
+          "averagePower": 284.0,
+          "avgGradeAdjustedSpeed": 2.48799991607666
         },
         {
           "km": 2,
@@ -3760,7 +3831,8 @@
           "averageCadence": 168.0625,
           "elevationGain": 27.0,
           "elevationLoss": 5.0,
-          "averagePower": 307.0
+          "averagePower": 307.0,
+          "avgGradeAdjustedSpeed": 2.559999942779541
         },
         {
           "km": 3,
@@ -3772,7 +3844,8 @@
           "averageCadence": 169.3125,
           "elevationGain": 0.0,
           "elevationLoss": 26.0,
-          "averagePower": 286.0
+          "averagePower": 286.0,
+          "avgGradeAdjustedSpeed": 2.5139999389648438
         },
         {
           "km": 4,
@@ -3784,7 +3857,8 @@
           "averageCadence": 166.09375,
           "elevationGain": 10.0,
           "elevationLoss": 5.0,
-          "averagePower": 294.0
+          "averagePower": 294.0,
+          "avgGradeAdjustedSpeed": 2.5320000648498535
         },
         {
           "km": 5,
@@ -3796,7 +3870,8 @@
           "averageCadence": 167.328125,
           "elevationGain": 8.0,
           "elevationLoss": 6.0,
-          "averagePower": 290.0
+          "averagePower": 290.0,
+          "avgGradeAdjustedSpeed": 2.532999992370605
         },
         {
           "km": 6,
@@ -3808,7 +3883,8 @@
           "averageCadence": 167.84375,
           "elevationGain": 7.0,
           "elevationLoss": 9.0,
-          "averagePower": 276.0
+          "averagePower": 276.0,
+          "avgGradeAdjustedSpeed": 2.489000082015991
         },
         {
           "km": 7,
@@ -3820,7 +3896,8 @@
           "averageCadence": 164.6875,
           "elevationGain": 9.0,
           "elevationLoss": 16.0,
-          "averagePower": 272.0
+          "averagePower": 272.0,
+          "avgGradeAdjustedSpeed": 2.36899995803833
         },
         {
           "km": 8,
@@ -3832,7 +3909,8 @@
           "averageCadence": 165.515625,
           "elevationGain": 2.0,
           "elevationLoss": 13.0,
-          "averagePower": 277.0
+          "averagePower": 277.0,
+          "avgGradeAdjustedSpeed": 2.549999952316284
         },
         {
           "km": 9,
@@ -3844,7 +3922,8 @@
           "averageCadence": 164.34375,
           "elevationGain": 11.0,
           "elevationLoss": 1.0,
-          "averagePower": 284.0
+          "averagePower": 284.0,
+          "avgGradeAdjustedSpeed": 2.443000078201294
         },
         {
           "km": 10,
@@ -3856,7 +3935,8 @@
           "averageCadence": 163.578125,
           "elevationGain": 14.0,
           "elevationLoss": 6.0,
-          "averagePower": 276.0
+          "averagePower": 276.0,
+          "avgGradeAdjustedSpeed": 2.384000062942505
         },
         {
           "km": 11,
@@ -3868,7 +3948,8 @@
           "averageCadence": 166.375,
           "elevationGain": 0.0,
           "elevationLoss": 17.0,
-          "averagePower": 270.0
+          "averagePower": 270.0,
+          "avgGradeAdjustedSpeed": 2.431999921798706
         },
         {
           "km": 12,
@@ -3880,7 +3961,8 @@
           "averageCadence": 164.734375,
           "elevationGain": 5.0,
           "elevationLoss": 3.0,
-          "averagePower": 269.0
+          "averagePower": 269.0,
+          "avgGradeAdjustedSpeed": 2.4070000648498535
         },
         {
           "km": 13,
@@ -3892,7 +3974,8 @@
           "averageCadence": 165.875,
           "elevationGain": 0.0,
           "elevationLoss": 5.0,
-          "averagePower": 268.0
+          "averagePower": 268.0,
+          "avgGradeAdjustedSpeed": 2.446000099182129
         },
         {
           "km": 14,
@@ -3904,7 +3987,8 @@
           "averageCadence": 164.3125,
           "elevationGain": 7.0,
           "elevationLoss": 0.0,
-          "averagePower": 269.0
+          "averagePower": 269.0,
+          "avgGradeAdjustedSpeed": 2.3959999084472656
         },
         {
           "km": 15,
@@ -3916,7 +4000,8 @@
           "averageCadence": 163.828125,
           "elevationGain": 4.0,
           "elevationLoss": 2.0,
-          "averagePower": 269.0
+          "averagePower": 269.0,
+          "avgGradeAdjustedSpeed": 2.372999906539917
         },
         {
           "km": 16,
@@ -3928,7 +4013,8 @@
           "averageCadence": 166.28125,
           "elevationGain": 0.0,
           "elevationLoss": 5.0,
-          "averagePower": 277.0
+          "averagePower": 277.0,
+          "avgGradeAdjustedSpeed": 2.437999963760376
         },
         {
           "km": 17,
@@ -3940,7 +4026,8 @@
           "averageCadence": 163.6875,
           "elevationGain": 5.0,
           "elevationLoss": 2.0,
-          "averagePower": 272.0
+          "averagePower": 272.0,
+          "avgGradeAdjustedSpeed": 2.3450000286102295
         },
         {
           "km": 18,
@@ -3952,7 +4039,8 @@
           "averageCadence": 165.5,
           "elevationGain": 2.0,
           "elevationLoss": 3.0,
-          "averagePower": 280.0
+          "averagePower": 280.0,
+          "avgGradeAdjustedSpeed": 2.4800000190734863
         },
         {
           "km": 19,
@@ -3964,7 +4052,8 @@
           "averageCadence": 164.578125,
           "elevationGain": 0.0,
           "elevationLoss": 6.0,
-          "averagePower": 255.0
+          "averagePower": 255.0,
+          "avgGradeAdjustedSpeed": 2.306999921798706
         },
         {
           "km": 20,
@@ -3976,7 +4065,8 @@
           "averageCadence": 161.171875,
           "elevationGain": 16.0,
           "elevationLoss": 5.0,
-          "averagePower": 258.0
+          "averagePower": 258.0,
+          "avgGradeAdjustedSpeed": 2.178999900817871
         },
         {
           "km": 21,
@@ -3988,7 +4078,8 @@
           "averageCadence": 163.796875,
           "elevationGain": 0.0,
           "elevationLoss": 8.0,
-          "averagePower": 258.0
+          "averagePower": 258.0,
+          "avgGradeAdjustedSpeed": 2.24399995803833
         },
         {
           "km": 22,
@@ -4000,7 +4091,8 @@
           "averageCadence": 157.234375,
           "elevationGain": 1.0,
           "elevationLoss": 0.0,
-          "averagePower": 274.0
+          "averagePower": 274.0,
+          "avgGradeAdjustedSpeed": 2.4630000591278076
         }
       ]
     },
@@ -4202,15 +4294,15 @@
       "endTimeGMT": "2026-06-05 05:33:43",
       "qualifyingDive": false,
       "activityUUID": "46d00c0a-4b5f-4088-96b5-502ecca3a0e6",
+      "parent": false,
       "decoDive": false,
-      "elevationCorrected": false,
-      "atpActivity": false,
       "purposeful": false,
       "manualActivity": false,
-      "autoCalcCalories": false,
-      "favorite": false,
       "pr": false,
-      "parent": false,
+      "favorite": false,
+      "autoCalcCalories": false,
+      "elevationCorrected": false,
+      "atpActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -4222,7 +4314,8 @@
           "averageCadence": 163.59375,
           "elevationGain": 23.0,
           "elevationLoss": 8.0,
-          "averagePower": 303.0
+          "averagePower": 303.0,
+          "avgGradeAdjustedSpeed": 2.5280001163482666
         },
         {
           "km": 2,
@@ -4234,7 +4327,8 @@
           "averageCadence": 156.921875,
           "elevationGain": 12.0,
           "elevationLoss": 15.0,
-          "averagePower": 281.0
+          "averagePower": 281.0,
+          "avgGradeAdjustedSpeed": 2.321000099182129
         }
       ]
     },
@@ -4437,15 +4531,15 @@
       "endTimeGMT": "2026-06-03 00:38:04",
       "qualifyingDive": false,
       "activityUUID": "5590f081-6eec-4cdc-8b42-f7593fbe32d6",
+      "parent": false,
       "decoDive": false,
-      "elevationCorrected": false,
-      "atpActivity": false,
       "purposeful": false,
       "manualActivity": false,
-      "autoCalcCalories": false,
-      "favorite": false,
       "pr": false,
-      "parent": false,
+      "favorite": false,
+      "autoCalcCalories": false,
+      "elevationCorrected": false,
+      "atpActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -4457,7 +4551,8 @@
           "averageCadence": 163.34375,
           "elevationGain": 1.0,
           "elevationLoss": 8.0,
-          "averagePower": 269.0
+          "averagePower": 269.0,
+          "avgGradeAdjustedSpeed": 2.4179999828338623
         },
         {
           "km": 2,
@@ -4469,7 +4564,8 @@
           "averageCadence": 169.1875,
           "elevationGain": 4.0,
           "elevationLoss": 7.0,
-          "averagePower": 282.0
+          "averagePower": 282.0,
+          "avgGradeAdjustedSpeed": 2.5209999084472656
         },
         {
           "km": 3,
@@ -4481,7 +4577,8 @@
           "averageCadence": 166.25,
           "elevationGain": 4.0,
           "elevationLoss": 2.0,
-          "averagePower": 278.0
+          "averagePower": 278.0,
+          "avgGradeAdjustedSpeed": 2.437000036239624
         },
         {
           "km": 4,
@@ -4493,7 +4590,8 @@
           "averageCadence": 166.6875,
           "elevationGain": 4.0,
           "elevationLoss": 3.0,
-          "averagePower": 290.0
+          "averagePower": 290.0,
+          "avgGradeAdjustedSpeed": 2.5469999313354488
         },
         {
           "km": 5,
@@ -4505,7 +4603,8 @@
           "averageCadence": 165.515625,
           "elevationGain": 9.0,
           "elevationLoss": 1.0,
-          "averagePower": 304.0
+          "averagePower": 304.0,
+          "avgGradeAdjustedSpeed": 2.615000009536743
         },
         {
           "km": 6,
@@ -4517,7 +4616,8 @@
           "averageCadence": 161.3125,
           "elevationGain": 0.0,
           "elevationLoss": 1.0,
-          "averagePower": 270.0
+          "averagePower": 270.0,
+          "avgGradeAdjustedSpeed": 2.431999921798706
         }
       ]
     }

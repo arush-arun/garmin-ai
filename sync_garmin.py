@@ -78,6 +78,7 @@ def fetch_km_splits(garmin: Garmin, activity_id) -> list[dict]:
                 "elevationGain": lap.get("elevationGain"),
                 "elevationLoss": lap.get("elevationLoss"),
                 "averagePower": lap.get("averagePower"),
+                "avgGradeAdjustedSpeed": lap.get("avgGradeAdjustedSpeed"),
             })
         return result
     except Exception as e:
