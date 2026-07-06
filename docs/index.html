@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Garmin Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
@@ -17,16 +17,18 @@
     --orange: #fb923c;
     --red: #f87171;
     --purple: #a78bfa;
+    --tab-height: 56px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
-    padding: 16px;
-    max-width: 600px;
+    padding: 16px 16px calc(var(--tab-height) + 20px);
+    max-width: 960px;
     margin: 0 auto;
     -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
   }
   h1 {
     font-size: 1.4rem;
@@ -38,11 +40,74 @@
     font-size: 0.8rem;
     margin-bottom: 20px;
   }
+
+  /* Tab content */
+  .tab-panel {
+    display: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .tab-panel.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Bottom tab bar */
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--tab-height);
+    background: rgba(15, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tab-bar button {
+    flex: 1;
+    max-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 6px 4px;
+    cursor: pointer;
+    transition: color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-bar button.active {
+    color: var(--accent);
+  }
+  .tab-bar button svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+  }
+
+  /* Cards grid */
   .snapshot {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+  }
+  @media (min-width: 600px) {
+    .snapshot { grid-template-columns: repeat(3, 1fr); }
   }
   .stat-card {
     background: var(--card);
@@ -66,12 +131,41 @@
     color: var(--muted);
     font-weight: 400;
   }
+
+  /* Last run card */
+  .last-run-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .last-run-card h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .last-run-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 400px) {
+    .last-run-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Section titles */
   .section-title {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 12px;
     margin-top: 8px;
   }
+
+  /* Chart cards */
   .chart-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -86,8 +180,41 @@
   }
   .chart-wrapper {
     position: relative;
-    height: 180px;
+    height: 200px;
   }
+  .chart-wrapper.tall {
+    height: 260px;
+  }
+
+  /* Sparkline mini chart */
+  .sparkline-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 400px) {
+    .sparkline-row { grid-template-columns: 1fr; }
+  }
+  .sparkline-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .sparkline-card h4 {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .sparkline-wrapper {
+    height: 60px;
+    position: relative;
+  }
+
+  /* Activities */
   .activity {
     background: var(--card);
     border: 1px solid var(--border);
@@ -132,17 +259,82 @@
     font-size: 1rem;
     font-weight: 600;
   }
-  .no-data {
-    text-align: center;
-    color: var(--muted);
-    padding: 40px 16px;
-    font-size: 0.9rem;
+
+  /* Collapsible activity detail */
+  .activity-detail {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
   }
-  .color-green { color: var(--green); }
-  .color-accent { color: var(--accent); }
-  .color-orange { color: var(--orange); }
-  .color-red { color: var(--red); }
-  .color-purple { color: var(--purple); }
+  .activity.expanded .activity-detail {
+    display: block;
+  }
+  .activity-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    cursor: pointer;
+    gap: 4px;
+  }
+  .activity-toggle svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    transition: transform 0.2s;
+  }
+  .activity.expanded .activity-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  /* Run selector */
+  .run-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .run-chip {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .run-chip.active {
+    border-color: currentColor;
+    background: currentColor;
+    color: #fff;
+  }
+  .run-chip.active span {
+    mix-blend-mode: difference;
+  }
+
+  /* Run summary row */
+  .run-summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .run-summary-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 0.75rem;
+  }
+  .run-summary-item .date { color: var(--muted); margin-bottom: 4px; }
+  .run-summary-item .stats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .run-summary-item .stats span { font-weight: 600; }
+
   .run-section {
     margin-top: 12px;
     padding-top: 10px;
@@ -166,43 +358,70 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
   }
-  .hr-zones {
+
+  /* HR Zones stacked bar */
+  .hr-zones-bar {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    height: 24px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
   }
-  .hr-zone-row {
+  .hr-zones-bar div {
+    height: 100%;
+    transition: width 0.3s;
+  }
+  .hr-zones-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+  .hr-zones-legend span {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
+    gap: 3px;
   }
-  .hr-zone-label {
-    width: 20px;
-    text-align: right;
+  .hr-zones-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .no-data {
+    text-align: center;
     color: var(--muted);
-    font-size: 0.65rem;
-    flex-shrink: 0;
+    padding: 40px 16px;
+    font-size: 0.9rem;
   }
-  .hr-zone-bar-bg {
-    flex: 1;
-    height: 14px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 3px;
-    overflow: hidden;
+
+  /* Loading skeleton */
+  .skeleton {
+    background: linear-gradient(90deg, var(--card) 25%, #22252f 50%, var(--card) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 12px;
   }
-  .hr-zone-bar {
-    height: 100%;
-    border-radius: 3px;
-    min-width: 2px;
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
-  .hr-zone-time {
-    width: 40px;
-    text-align: right;
-    color: var(--muted);
-    font-size: 0.7rem;
-    flex-shrink: 0;
+  .skeleton-card {
+    height: 80px;
+    margin-bottom: 10px;
   }
+  .skeleton-chart {
+    height: 200px;
+    margin-bottom: 16px;
+  }
+
+  .color-green { color: var(--green); }
+  .color-accent { color: var(--accent); }
+  .color-orange { color: var(--orange); }
+  .color-red { color: var(--red); }
+  .color-purple { color: var(--purple); }
 </style>
 </head>
 <body>
@@ -210,56 +429,133 @@
 <h1>Garmin Dashboard</h1>
 <p class="subtitle" id="syncTime">Loading...</p>
 
-<div id="snapshot" class="snapshot"></div>
-
-<p class="section-title">Trends</p>
-<div class="chart-card">
-  <h3>HRV &amp; Resting HR</h3>
-  <div class="chart-wrapper"><canvas id="hrvChart"></canvas></div>
-</div>
-<div class="chart-card">
-  <h3>Sleep</h3>
-  <div class="chart-wrapper"><canvas id="sleepChart"></canvas></div>
-</div>
-<div class="chart-card">
-  <h3>Steps</h3>
-  <div class="chart-wrapper"><canvas id="stepsChart"></canvas></div>
-</div>
-
-<p class="section-title">Run Comparison</p>
-<div class="chart-card">
-  <h3>Avg HR per KM (Last 5 Runs)</h3>
-  <div class="chart-wrapper" style="height:220px"><canvas id="runHrChart"></canvas></div>
-</div>
-<div class="chart-card">
-  <h3>Pace per KM (Last 5 Runs)</h3>
-  <div class="chart-wrapper" style="height:220px"><canvas id="runPaceChart"></canvas></div>
-</div>
-<div class="chart-card">
-  <h3>Cadence per KM (Last 5 Runs)</h3>
-  <div class="chart-wrapper" style="height:220px"><canvas id="runCadenceChart"></canvas></div>
-</div>
-<div class="chart-card">
-  <h3>Grade-Adjusted Pace per KM (Last 5 Runs)</h3>
-  <div class="chart-wrapper" style="height:220px"><canvas id="runGapChart"></canvas></div>
+<!-- Tab Panels -->
+<div id="tab-overview" class="tab-panel active">
+  <div id="skeleton-overview">
+    <div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div>
+  </div>
+  <div id="overview-content" style="display:none">
+    <div id="snapshot" class="snapshot"></div>
+    <div id="lastRunCard"></div>
+    <div class="sparkline-row">
+      <div class="sparkline-card">
+        <h4>HRV 7-Day</h4>
+        <div class="sparkline-wrapper"><canvas id="sparkHrv"></canvas></div>
+      </div>
+      <div class="sparkline-card">
+        <h4>RHR 7-Day</h4>
+        <div class="sparkline-wrapper"><canvas id="sparkRhr"></canvas></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<p class="section-title">Recent Activities</p>
-<div id="activities"></div>
+<div id="tab-trends" class="tab-panel">
+  <div class="chart-card">
+    <h3>HRV &amp; Resting HR</h3>
+    <div class="chart-wrapper tall"><canvas id="hrvChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Daily Steps</h3>
+    <div class="chart-wrapper tall"><canvas id="stepsChart"></canvas></div>
+  </div>
+</div>
+
+<div id="tab-sleep" class="tab-panel">
+  <div class="chart-card">
+    <h3>Sleep Duration &amp; Score</h3>
+    <div class="chart-wrapper tall"><canvas id="sleepChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Sleep Score Trend</h3>
+    <div class="chart-wrapper"><canvas id="sleepScoreChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Sleep vs HRV Correlation</h3>
+    <div class="chart-wrapper"><canvas id="sleepHrvChart"></canvas></div>
+  </div>
+</div>
+
+<div id="tab-running" class="tab-panel">
+  <div id="runSummaryRow" class="run-summary-row"></div>
+  <div id="runSelector" class="run-selector"></div>
+  <div class="chart-card">
+    <h3>Avg HR per KM</h3>
+    <div class="chart-wrapper tall"><canvas id="runHrChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Pace per KM</h3>
+    <div class="chart-wrapper tall"><canvas id="runPaceChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Cadence per KM</h3>
+    <div class="chart-wrapper tall"><canvas id="runCadenceChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Grade-Adjusted Pace per KM</h3>
+    <div class="chart-wrapper tall"><canvas id="runGapChart"></canvas></div>
+  </div>
+  <p class="section-title">Activities</p>
+  <div id="activities"></div>
+</div>
+
+<!-- Bottom Tab Bar -->
+<nav class="tab-bar">
+  <button class="active" data-tab="overview">
+    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    <span>Overview</span>
+  </button>
+  <button data-tab="trends">
+    <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+    <span>Trends</span>
+  </button>
+  <button data-tab="sleep">
+    <svg viewBox="0 0 24 24"><path d="M12.34 2.02C6.59 1.82 2 6.42 2 12c0 5.52 4.48 10 10 10 3.71 0 6.93-2.02 8.66-5.02-7.51-.25-12.09-8.43-8.32-14.96z"/></svg>
+    <span>Sleep</span>
+  </button>
+  <button data-tab="running">
+    <svg viewBox="0 0 24 24"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>
+    <span>Running</span>
+  </button>
+</nav>
 
 <script>
+// --- Chart defaults: premium aesthetic ---
+const tooltipStyle = {
+  backgroundColor: 'rgba(26, 29, 39, 0.95)',
+  titleColor: '#e1e4ed',
+  bodyColor: '#e1e4ed',
+  borderColor: '#2a2d3a',
+  borderWidth: 1,
+  cornerRadius: 8,
+  padding: 10,
+  titleFont: { size: 11, weight: '600' },
+  bodyFont: { size: 12 },
+  displayColors: true,
+  boxPadding: 4
+};
+
 const chartDefaults = {
   responsive: true,
   maintainAspectRatio: false,
+  animation: { duration: 600, easing: 'easeOutQuart' },
   plugins: {
-    legend: { display: true, position: 'top', labels: { color: '#8b8fa3', boxWidth: 10, font: { size: 11 } } }
+    legend: { display: true, position: 'top', labels: { color: '#8b8fa3', boxWidth: 10, font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
+    tooltip: tooltipStyle
   },
   scales: {
-    x: { ticks: { color: '#8b8fa3', font: { size: 10 } }, grid: { color: '#2a2d3a' } },
-    y: { ticks: { color: '#8b8fa3', font: { size: 10 } }, grid: { color: '#2a2d3a' } }
+    x: { ticks: { color: '#8b8fa3', font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
+    y: { ticks: { color: '#8b8fa3', font: { size: 10 } }, grid: { color: 'rgba(42,45,58,0.5)', drawBorder: false }, border: { display: false } }
+  },
+  elements: {
+    line: { borderWidth: 2, tension: 0.35 },
+    point: { radius: 2, hoverRadius: 5, hitRadius: 10 },
+    bar: { borderRadius: 6 }
   }
 };
 
+// --- Utility Functions ---
 function formatPace(speedMs) {
   if (!speedMs || speedMs <= 0) return '--';
   const paceSeconds = 1000 / speedMs;
@@ -267,7 +563,6 @@ function formatPace(speedMs) {
   const secs = Math.round(paceSeconds % 60);
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
-
 function formatDuration(seconds) {
   if (!seconds) return '--';
   const h = Math.floor(seconds / 3600);
@@ -276,29 +571,24 @@ function formatDuration(seconds) {
   if (h > 0) return `${h}h ${m}m`;
   return `${m}m ${s}s`;
 }
-
 function formatDistance(meters) {
   if (!meters) return '--';
   return (meters / 1000).toFixed(2);
 }
-
 function formatDate(dateStr) {
   const d = new Date(dateStr);
   return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
 }
-
 function formatDateTime(dateStr) {
   const d = new Date(dateStr.replace(' ', 'T'));
   return d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 }
-
 function formatSplitPace(seconds) {
   if (!seconds) return '--';
   const mins = Math.floor(seconds / 60);
   const secs = Math.round(seconds % 60);
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
-
 function formatZoneTime(seconds) {
   if (!seconds || seconds < 1) return '0s';
   const m = Math.floor(seconds / 60);
@@ -307,7 +597,35 @@ function formatZoneTime(seconds) {
   return `${s}s`;
 }
 
-function renderHrZones(a) {
+// --- Gradient helper ---
+function makeGradient(ctx, color, height) {
+  const g = ctx.createLinearGradient(0, 0, 0, height || 200);
+  g.addColorStop(0, color + '40');
+  g.addColorStop(1, color + '00');
+  return g;
+}
+
+// --- Tab Logic ---
+let activeTab = 'overview';
+const chartInstances = {};
+const tabInited = { overview: false, trends: false, sleep: false, running: false };
+let appData = null;
+
+document.querySelectorAll('.tab-bar button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    if (tab === activeTab) return;
+    document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    activeTab = tab;
+    if (appData && !tabInited[tab]) renderTab(tab);
+  });
+});
+
+// --- HR Zones stacked bar ---
+function renderHrZonesBar(a) {
   const zones = [
     { label: 'Z1', seconds: a.hrTimeInZone_1 || 0, color: '#94a3b8' },
     { label: 'Z2', seconds: a.hrTimeInZone_2 || 0, color: '#6c8cff' },
@@ -315,17 +633,372 @@ function renderHrZones(a) {
     { label: 'Z4', seconds: a.hrTimeInZone_4 || 0, color: '#fb923c' },
     { label: 'Z5', seconds: a.hrTimeInZone_5 || 0, color: '#f87171' },
   ];
-  const maxSec = Math.max(...zones.map(z => z.seconds), 1);
-  return zones.map(z => {
-    const pct = Math.max((z.seconds / maxSec) * 100, 0);
-    return `<div class="hr-zone-row">
-      <span class="hr-zone-label">${z.label}</span>
-      <div class="hr-zone-bar-bg"><div class="hr-zone-bar" style="width:${pct}%;background:${z.color}"></div></div>
-      <span class="hr-zone-time">${formatZoneTime(z.seconds)}</span>
-    </div>`;
+  const total = zones.reduce((s, z) => s + z.seconds, 0) || 1;
+  const barHtml = zones.map(z => {
+    const pct = (z.seconds / total) * 100;
+    return pct > 0 ? `<div style="width:${pct}%;background:${z.color}" title="${z.label}: ${formatZoneTime(z.seconds)}"></div>` : '';
+  }).join('');
+  const legendHtml = zones.filter(z => z.seconds > 0).map(z =>
+    `<span><span class="dot" style="background:${z.color}"></span>${z.label} ${formatZoneTime(z.seconds)}</span>`
+  ).join('');
+  return `<div class="hr-zones-bar">${barHtml}</div><div class="hr-zones-legend">${legendHtml}</div>`;
+}
+
+// --- Run state ---
+const runColors = ['#6c8cff', '#4ade80', '#fb923c', '#f87171', '#a78bfa'];
+let selectedRuns = [];
+let allRuns = [];
+
+function renderRunCharts() {
+  const active = selectedRuns.filter(i => i);
+  const runs = allRuns.filter((_, i) => active[i]);
+  if (!runs.length) return;
+
+  const maxKm = Math.max(...runs.map(r => r.kmSplits.filter(s => s.distance >= 900).length));
+  const kmLabels = Array.from({length: maxKm}, (_, i) => `${i + 1}`);
+
+  const makeDatasets = (fn) => runs.map((r, idx) => {
+    const originalIdx = allRuns.indexOf(r);
+    const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
+    return {
+      label: formatDate(r.startTimeLocal.slice(0, 10)),
+      data: fullKmSplits.map(fn),
+      borderColor: runColors[originalIdx],
+      backgroundColor: runColors[originalIdx] + '18',
+      tension: 0.35,
+      pointRadius: 2,
+      pointHoverRadius: 5,
+      pointBackgroundColor: runColors[originalIdx],
+      borderWidth: 2,
+    };
+  });
+
+  // Destroy existing
+  ['runHr', 'runPace', 'runCadence', 'runGap'].forEach(k => {
+    if (chartInstances[k]) { chartInstances[k].destroy(); chartInstances[k] = null; }
+  });
+
+  const xAxis = { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } };
+
+  chartInstances.runHr = new Chart(document.getElementById('runHrChart'), {
+    type: 'line',
+    data: { labels: kmLabels, datasets: makeDatasets(s => s.averageHR) },
+    options: { ...chartDefaults, scales: { x: xAxis, y: { ...chartDefaults.scales.y, title: { display: true, text: 'HR (bpm)', color: '#8b8fa3', font: { size: 10 } } } } }
+  });
+
+  chartInstances.runPace = new Chart(document.getElementById('runPaceChart'), {
+    type: 'line',
+    data: { labels: kmLabels, datasets: makeDatasets(s => s.averageSpeed > 0 ? (1000 / s.averageSpeed / 60) : null) },
+    options: { ...chartDefaults, scales: { x: xAxis, y: { ...chartDefaults.scales.y, reverse: true, title: { display: true, text: 'Pace (min/km)', color: '#8b8fa3', font: { size: 10 } }, ticks: { ...chartDefaults.scales.y.ticks, callback: v => { const m = Math.floor(v); const s = Math.round((v - m) * 60); return `${m}:${s.toString().padStart(2, '0')}`; } } } } }
+  });
+
+  chartInstances.runCadence = new Chart(document.getElementById('runCadenceChart'), {
+    type: 'line',
+    data: { labels: kmLabels, datasets: makeDatasets(s => s.averageCadence) },
+    options: { ...chartDefaults, scales: { x: xAxis, y: { ...chartDefaults.scales.y, title: { display: true, text: 'Cadence (spm)', color: '#8b8fa3', font: { size: 10 } } } } }
+  });
+
+  chartInstances.runGap = new Chart(document.getElementById('runGapChart'), {
+    type: 'line',
+    data: { labels: kmLabels, datasets: makeDatasets(s => { const gap = s.avgGradeAdjustedSpeed || s.averageSpeed; return gap > 0 ? (1000 / gap / 60) : null; }) },
+    options: { ...chartDefaults, scales: { x: xAxis, y: { ...chartDefaults.scales.y, reverse: true, title: { display: true, text: 'GAP (min/km)', color: '#8b8fa3', font: { size: 10 } }, ticks: { ...chartDefaults.scales.y.ticks, callback: v => { const m = Math.floor(v); const s = Math.round((v - m) * 60); return `${m}:${s.toString().padStart(2, '0')}`; } } } } }
+  });
+}
+
+// --- Render Tabs (lazy) ---
+function renderTab(tab) {
+  if (!appData) return;
+  const data = appData;
+  const wellness = data.wellness || [];
+  const sorted = [...wellness].sort((a, b) => b.date.localeCompare(a.date));
+  const chronological = [...sorted].reverse();
+  const labels = chronological.map(w => formatDate(w.date));
+
+  if (tab === 'overview') {
+    renderOverview(data, sorted, chronological, labels);
+    tabInited.overview = true;
+  } else if (tab === 'trends') {
+    renderTrends(chronological, labels);
+    tabInited.trends = true;
+  } else if (tab === 'sleep') {
+    renderSleep(chronological, labels);
+    tabInited.sleep = true;
+  } else if (tab === 'running') {
+    renderRunning(data);
+    tabInited.running = true;
+  }
+}
+
+function renderOverview(data, sorted, chronological, labels) {
+  const today = sorted[0];
+  document.getElementById('skeleton-overview').style.display = 'none';
+  document.getElementById('overview-content').style.display = 'block';
+
+  if (today) {
+    document.getElementById('snapshot').innerHTML = `
+      <div class="stat-card"><div class="stat-label">HRV</div><div class="stat-value color-accent">${today.hrvOvernight ?? '--'} <span class="stat-unit">ms</span></div></div>
+      <div class="stat-card"><div class="stat-label">Resting HR</div><div class="stat-value color-red">${today.restingHR ?? '--'} <span class="stat-unit">bpm</span></div></div>
+      <div class="stat-card"><div class="stat-label">Sleep</div><div class="stat-value color-purple">${today.sleepHours ?? '--'} <span class="stat-unit">hrs</span></div></div>
+      <div class="stat-card"><div class="stat-label">Sleep Score</div><div class="stat-value color-green">${today.sleepScore ?? '--'}</div></div>
+      <div class="stat-card"><div class="stat-label">Steps</div><div class="stat-value color-orange">${today.steps != null ? today.steps.toLocaleString() : '--'}</div></div>
+      <div class="stat-card"><div class="stat-label">Date</div><div class="stat-value" style="font-size:1rem;padding-top:4px">${formatDate(today.date)}</div></div>
+    `;
+  }
+
+  // Last run summary
+  const activities = data.activities || [];
+  const lastRun = activities.find(a => a.activityType?.typeKey === 'running');
+  if (lastRun) {
+    document.getElementById('lastRunCard').innerHTML = `
+      <div class="last-run-card">
+        <h3>Last Run</h3>
+        <div class="last-run-stats">
+          <div><div class="activity-stat-label">Distance</div><div class="activity-stat-value">${formatDistance(lastRun.distance)} <span class="stat-unit">km</span></div></div>
+          <div><div class="activity-stat-label">Pace</div><div class="activity-stat-value">${formatPace(lastRun.averageSpeed)} <span class="stat-unit">/km</span></div></div>
+          <div><div class="activity-stat-label">Avg HR</div><div class="activity-stat-value">${lastRun.averageHR ?? '--'} <span class="stat-unit">bpm</span></div></div>
+          <div><div class="activity-stat-label">Duration</div><div class="activity-stat-value">${formatDuration(lastRun.duration)}</div></div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Sparklines (last 7 days)
+  const last7 = chronological.slice(-7);
+  const sparkLabels = last7.map(w => w.date.slice(5));
+  const sparkOpts = {
+    responsive: true, maintainAspectRatio: false,
+    animation: { duration: 400 },
+    plugins: { legend: { display: false }, tooltip: { ...tooltipStyle, enabled: true } },
+    scales: { x: { display: false }, y: { display: false } },
+    elements: { point: { radius: 0, hoverRadius: 4 }, line: { borderWidth: 2, tension: 0.4 } }
+  };
+
+  const hrvCtx = document.getElementById('sparkHrv').getContext('2d');
+  chartInstances.sparkHrv = new Chart(hrvCtx, {
+    type: 'line',
+    data: { labels: sparkLabels, datasets: [{ data: last7.map(w => w.hrvOvernight), borderColor: '#6c8cff', backgroundColor: makeGradient(hrvCtx, '#6c8cff', 60), fill: true }] },
+    options: sparkOpts
+  });
+
+  const rhrCtx = document.getElementById('sparkRhr').getContext('2d');
+  chartInstances.sparkRhr = new Chart(rhrCtx, {
+    type: 'line',
+    data: { labels: sparkLabels, datasets: [{ data: last7.map(w => w.restingHR), borderColor: '#f87171', backgroundColor: makeGradient(rhrCtx, '#f87171', 60), fill: true }] },
+    options: sparkOpts
+  });
+}
+
+function renderTrends(chronological, labels) {
+  const hrvCtx = document.getElementById('hrvChart').getContext('2d');
+  chartInstances.hrv = new Chart(hrvCtx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'HRV (ms)', data: chronological.map(w => w.hrvOvernight), borderColor: '#6c8cff', backgroundColor: makeGradient(hrvCtx, '#6c8cff', 260), fill: true, yAxisID: 'y' },
+        { label: 'Resting HR', data: chronological.map(w => w.restingHR), borderColor: '#f87171', backgroundColor: 'transparent', fill: false, yAxisID: 'y1' }
+      ]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: chartDefaults.scales.x,
+        y: { ...chartDefaults.scales.y, position: 'left' },
+        y1: { ...chartDefaults.scales.y, position: 'right', grid: { display: false }, border: { display: false } }
+      }
+    }
+  });
+
+  const stepsCtx = document.getElementById('stepsChart').getContext('2d');
+  chartInstances.steps = new Chart(stepsCtx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Steps',
+        data: chronological.map(w => w.steps),
+        backgroundColor: makeGradient(stepsCtx, '#fb923c', 260),
+        borderColor: '#fb923c',
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: chartDefaults
+  });
+}
+
+function renderSleep(chronological, labels) {
+  const sleepCtx = document.getElementById('sleepChart').getContext('2d');
+  chartInstances.sleep = new Chart(sleepCtx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Hours', data: chronological.map(w => w.sleepHours), backgroundColor: 'rgba(167,139,250,0.5)', borderColor: '#a78bfa', borderWidth: 1, borderRadius: 6, yAxisID: 'y' },
+        { label: 'Score', data: chronological.map(w => w.sleepScore), type: 'line', borderColor: '#4ade80', backgroundColor: makeGradient(sleepCtx, '#4ade80', 260), fill: true, yAxisID: 'y1' }
+      ]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: chartDefaults.scales.x,
+        y: { ...chartDefaults.scales.y, position: 'left', min: 0, max: 12, title: { display: true, text: 'Hours', color: '#8b8fa3', font: { size: 10 } } },
+        y1: { ...chartDefaults.scales.y, position: 'right', min: 0, max: 100, grid: { display: false }, border: { display: false }, title: { display: true, text: 'Score', color: '#8b8fa3', font: { size: 10 } } }
+      }
+    }
+  });
+
+  // Sleep score trend
+  const scoreCtx = document.getElementById('sleepScoreChart').getContext('2d');
+  chartInstances.sleepScore = new Chart(scoreCtx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: 'Sleep Score', data: chronological.map(w => w.sleepScore), borderColor: '#4ade80', backgroundColor: makeGradient(scoreCtx, '#4ade80', 200), fill: true }]
+    },
+    options: { ...chartDefaults, scales: { x: chartDefaults.scales.x, y: { ...chartDefaults.scales.y, min: 0, max: 100 } } }
+  });
+
+  // Sleep vs HRV correlation scatter
+  const scatterData = chronological
+    .filter(w => w.sleepHours && w.hrvOvernight)
+    .map(w => ({ x: w.sleepHours, y: w.hrvOvernight }));
+  chartInstances.sleepHrv = new Chart(document.getElementById('sleepHrvChart'), {
+    type: 'scatter',
+    data: {
+      datasets: [{ label: 'Sleep vs HRV', data: scatterData, backgroundColor: '#a78bfa', borderColor: '#a78bfa', pointRadius: 5, pointHoverRadius: 8 }]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: { ...chartDefaults.scales.x, title: { display: true, text: 'Sleep (hrs)', color: '#8b8fa3', font: { size: 10 } } },
+        y: { ...chartDefaults.scales.y, title: { display: true, text: 'HRV (ms)', color: '#8b8fa3', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+function renderRunning(data) {
+  const allActivities = data.activities || [];
+  allRuns = allActivities
+    .filter(a => a.activityType?.typeKey === 'running' && a.kmSplits?.length > 1)
+    .slice(0, 5);
+
+  if (allRuns.length === 0) {
+    document.getElementById('runSelector').innerHTML = '<div class="no-data">No runs with split data yet</div>';
+    document.getElementById('activities').innerHTML = '';
+    return;
+  }
+
+  selectedRuns = allRuns.map(() => true);
+
+  // Run summary row
+  document.getElementById('runSummaryRow').innerHTML = allRuns.map((r, i) => `
+    <div class="run-summary-item" style="border-left: 3px solid ${runColors[i]}">
+      <div class="date">${formatDate(r.startTimeLocal.slice(0, 10))}</div>
+      <div class="stats">
+        <span>${formatDistance(r.distance)}km</span>
+        <span>${formatPace(r.averageSpeed)}/km</span>
+        <span>${r.averageHR ?? '--'}bpm</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Run selector chips
+  document.getElementById('runSelector').innerHTML = allRuns.map((r, i) => `
+    <button class="run-chip active" data-idx="${i}" style="color:${runColors[i]};border-color:${runColors[i]}">
+      <span>${formatDate(r.startTimeLocal.slice(0, 10))}</span>
+    </button>
+  `).join('');
+
+  document.querySelectorAll('.run-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const idx = parseInt(chip.dataset.idx);
+      selectedRuns[idx] = !selectedRuns[idx];
+      chip.classList.toggle('active');
+      renderRunCharts();
+    });
+  });
+
+  renderRunCharts();
+
+  // Activities list
+  const activities = allActivities;
+  const actContainer = document.getElementById('activities');
+  if (activities.length === 0) {
+    actContainer.innerHTML = '<div class="no-data">No recent activities</div>';
+    return;
+  }
+
+  actContainer.innerHTML = activities.map((a, idx) => {
+    const typeKey = a.activityType?.typeKey || 'activity';
+    const isRun = typeKey === 'running';
+
+    const coreStats = isRun ? `
+      <div><div class="activity-stat-label">Distance</div><div class="activity-stat-value">${formatDistance(a.distance)} <span class="stat-unit">km</span></div></div>
+      <div><div class="activity-stat-label">Pace</div><div class="activity-stat-value">${formatPace(a.averageSpeed)} <span class="stat-unit">/km</span></div></div>
+      <div><div class="activity-stat-label">Avg HR</div><div class="activity-stat-value">${a.averageHR ?? '--'} <span class="stat-unit">bpm</span></div></div>
+    ` : `
+      <div><div class="activity-stat-label">Duration</div><div class="activity-stat-value">${formatDuration(a.duration)}</div></div>
+      <div><div class="activity-stat-label">Avg HR</div><div class="activity-stat-value">${a.averageHR ?? '--'} <span class="stat-unit">bpm</span></div></div>
+      <div><div class="activity-stat-label">Calories</div><div class="activity-stat-value">${a.calories ?? '--'}</div></div>
+    `;
+
+    let detailHtml = '';
+    if (isRun) {
+      let sections = '';
+
+      // Fastest Splits
+      const splits = [];
+      if (a.fastestSplit_1000) splits.push({ label: '1K', val: formatSplitPace(a.fastestSplit_1000) });
+      if (a.fastestSplit_1609) splits.push({ label: 'Mile', val: formatSplitPace(a.fastestSplit_1609) });
+      if (a.fastestSplit_5000) splits.push({ label: '5K', val: formatSplitPace(a.fastestSplit_5000 / 5) });
+      if (a.fastestSplit_10000) splits.push({ label: '10K', val: formatSplitPace(a.fastestSplit_10000 / 10) });
+      if (splits.length) sections += `<div class="run-section"><div class="run-section-title">Fastest Splits</div><div class="run-grid-4">${splits.map(s => `<div><div class="activity-stat-label">${s.label}</div><div class="activity-stat-value" style="font-size:0.9rem">${s.val}</div></div>`).join('')}</div></div>`;
+
+      // Running Dynamics
+      const dynamics = [];
+      if (a.averageRunningCadenceInStepsPerMinute) dynamics.push({ label: 'Cadence', val: Math.round(a.averageRunningCadenceInStepsPerMinute), unit: 'spm' });
+      if (a.avgStrideLength) dynamics.push({ label: 'Stride', val: (a.avgStrideLength / 100).toFixed(2), unit: 'm' });
+      if (a.avgGroundContactTime) dynamics.push({ label: 'GCT', val: Math.round(a.avgGroundContactTime), unit: 'ms' });
+      if (a.avgVerticalOscillation) dynamics.push({ label: 'Vert Osc', val: a.avgVerticalOscillation.toFixed(1), unit: 'cm' });
+      if (dynamics.length) sections += `<div class="run-section"><div class="run-section-title">Running Dynamics</div><div class="run-grid">${dynamics.map(d => `<div><div class="activity-stat-label">${d.label}</div><div class="activity-stat-value" style="font-size:0.9rem">${d.val} <span class="stat-unit">${d.unit}</span></div></div>`).join('')}</div></div>`;
+
+      // HR Zones
+      const hasZones = (a.hrTimeInZone_1 || 0) + (a.hrTimeInZone_2 || 0) + (a.hrTimeInZone_3 || 0) + (a.hrTimeInZone_4 || 0) + (a.hrTimeInZone_5 || 0) > 0;
+      if (hasZones) sections += `<div class="run-section"><div class="run-section-title">HR Zones</div>${renderHrZonesBar(a)}</div>`;
+
+      // Training
+      const training = [];
+      if (a.vO2MaxValue) training.push({ label: 'VO2 Max', val: a.vO2MaxValue, unit: '' });
+      if (a.aerobicTrainingEffect) training.push({ label: 'Aerobic TE', val: a.aerobicTrainingEffect.toFixed(1), unit: '' });
+      if (a.activityTrainingLoad) training.push({ label: 'Load', val: Math.round(a.activityTrainingLoad), unit: '' });
+      if (a.elevationGain) training.push({ label: 'Elev Gain', val: Math.round(a.elevationGain), unit: 'm' });
+      if (a.avgPower) training.push({ label: 'Avg Power', val: Math.round(a.avgPower), unit: 'W' });
+      if (a.calories) training.push({ label: 'Calories', val: Math.round(a.calories), unit: '' });
+      if (training.length) sections += `<div class="run-section"><div class="run-section-title">Training</div><div class="run-grid">${training.map(t => `<div><div class="activity-stat-label">${t.label}</div><div class="activity-stat-value" style="font-size:0.9rem">${t.val} <span class="stat-unit">${t.unit}</span></div></div>`).join('')}</div></div>`;
+
+      if (sections) detailHtml = `<div class="activity-detail">${sections}</div>`;
+    }
+
+    const toggleHtml = detailHtml ? `<div class="activity-toggle" onclick="this.parentElement.classList.toggle('expanded')"><span>Details</span><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" fill="currentColor"/></svg></div>` : '';
+
+    return `
+      <div class="activity" id="act-${idx}">
+        <div class="activity-header">
+          <span class="activity-name">${a.activityName || typeKey}</span>
+          <span class="activity-type">${typeKey}</span>
+        </div>
+        <div class="activity-date">${formatDateTime(a.startTimeLocal)}</div>
+        <div class="activity-stats">${coreStats}</div>
+        ${toggleHtml}
+        ${detailHtml}
+      </div>
+    `;
   }).join('');
 }
 
+// --- Init ---
 async function init() {
   let data;
   try {
@@ -334,412 +1007,18 @@ async function init() {
     data = await resp.json();
   } catch (e) {
     document.getElementById('syncTime').textContent = 'Could not load data.json';
-    document.getElementById('snapshot').innerHTML = '<div class="no-data" style="grid-column:1/-1">No data available. Run the sync script first.</div>';
+    document.getElementById('skeleton-overview').innerHTML = '<div class="no-data" style="grid-column:1/-1">No data available. Run the sync script first.</div>';
     return;
   }
+
+  appData = data;
 
   // Sync time
   const syncDate = new Date(data.last_sync);
   document.getElementById('syncTime').textContent = `Last sync: ${syncDate.toLocaleString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'Australia/Brisbane' })}`;
 
-  // Snapshot — most recent wellness day
-  const wellness = data.wellness || [];
-  const sorted = [...wellness].sort((a, b) => b.date.localeCompare(a.date));
-  const today = sorted[0];
-
-  if (today) {
-    document.getElementById('snapshot').innerHTML = `
-      <div class="stat-card">
-        <div class="stat-label">HRV</div>
-        <div class="stat-value color-accent">${today.hrvOvernight ?? '--'} <span class="stat-unit">ms</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Resting HR</div>
-        <div class="stat-value color-red">${today.restingHR ?? '--'} <span class="stat-unit">bpm</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Sleep</div>
-        <div class="stat-value color-purple">${today.sleepHours ?? '--'} <span class="stat-unit">hrs</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Sleep Score</div>
-        <div class="stat-value color-green">${today.sleepScore ?? '--'}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Steps</div>
-        <div class="stat-value color-orange">${today.steps != null ? today.steps.toLocaleString() : '--'}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Date</div>
-        <div class="stat-value" style="font-size:1rem; padding-top:4px">${formatDate(today.date)}</div>
-      </div>
-    `;
-  }
-
-  // Charts — data chronological (oldest first)
-  const chronological = [...sorted].reverse();
-  const labels = chronological.map(w => formatDate(w.date));
-
-  // HRV + Resting HR
-  new Chart(document.getElementById('hrvChart'), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'HRV (ms)',
-          data: chronological.map(w => w.hrvOvernight),
-          borderColor: '#6c8cff',
-          backgroundColor: 'rgba(108,140,255,0.1)',
-          tension: 0.3,
-          fill: true,
-          pointRadius: 4,
-          pointBackgroundColor: '#6c8cff',
-          yAxisID: 'y'
-        },
-        {
-          label: 'Resting HR',
-          data: chronological.map(w => w.restingHR),
-          borderColor: '#f87171',
-          backgroundColor: 'rgba(248,113,113,0.1)',
-          tension: 0.3,
-          fill: false,
-          pointRadius: 4,
-          pointBackgroundColor: '#f87171',
-          yAxisID: 'y1'
-        }
-      ]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        ...chartDefaults.scales,
-        y: { ...chartDefaults.scales.y, position: 'left', title: { display: false } },
-        y1: { ...chartDefaults.scales.y, position: 'right', grid: { drawOnChartArea: false } }
-      }
-    }
-  });
-
-  // Sleep
-  new Chart(document.getElementById('sleepChart'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Hours',
-          data: chronological.map(w => w.sleepHours),
-          backgroundColor: 'rgba(167,139,250,0.6)',
-          borderColor: '#a78bfa',
-          borderWidth: 1,
-          borderRadius: 4,
-          yAxisID: 'y'
-        },
-        {
-          label: 'Score',
-          data: chronological.map(w => w.sleepScore),
-          type: 'line',
-          borderColor: '#4ade80',
-          backgroundColor: 'rgba(74,222,128,0.1)',
-          tension: 0.3,
-          pointRadius: 4,
-          pointBackgroundColor: '#4ade80',
-          yAxisID: 'y1'
-        }
-      ]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        ...chartDefaults.scales,
-        y: { ...chartDefaults.scales.y, position: 'left', min: 0, max: 12 },
-        y1: { ...chartDefaults.scales.y, position: 'right', min: 0, max: 100, grid: { drawOnChartArea: false } }
-      }
-    }
-  });
-
-  // Steps
-  new Chart(document.getElementById('stepsChart'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Steps',
-        data: chronological.map(w => w.steps),
-        backgroundColor: 'rgba(251,146,60,0.6)',
-        borderColor: '#fb923c',
-        borderWidth: 1,
-        borderRadius: 4
-      }]
-    },
-    options: chartDefaults
-  });
-
-  // Run Comparison Charts
-  const allActivities = data.activities || [];
-  const runs = allActivities
-    .filter(a => a.activityType?.typeKey === 'running' && a.kmSplits?.length > 1)
-    .slice(0, 5);
-
-  if (runs.length > 0) {
-    const runColors = ['#6c8cff', '#4ade80', '#fb923c', '#f87171', '#a78bfa'];
-    const maxKm = Math.max(...runs.map(r => r.kmSplits.filter(s => s.distance >= 900).length));
-    const kmLabels = Array.from({length: maxKm}, (_, i) => `${i + 1}`);
-
-    // HR per KM chart
-    new Chart(document.getElementById('runHrChart'), {
-      type: 'line',
-      data: {
-        labels: kmLabels,
-        datasets: runs.map((r, i) => {
-          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
-          return {
-            label: formatDate(r.startTimeLocal.slice(0, 10)),
-            data: fullKmSplits.map(s => s.averageHR),
-            borderColor: runColors[i],
-            backgroundColor: runColors[i] + '18',
-            tension: 0.3,
-            pointRadius: 3,
-            pointBackgroundColor: runColors[i],
-            borderWidth: 2,
-          };
-        })
-      },
-      options: {
-        ...chartDefaults,
-        scales: {
-          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
-          y: { ...chartDefaults.scales.y, title: { display: true, text: 'HR (bpm)', color: '#8b8fa3', font: { size: 10 } } }
-        }
-      }
-    });
-
-    // Pace per KM chart
-    new Chart(document.getElementById('runPaceChart'), {
-      type: 'line',
-      data: {
-        labels: kmLabels,
-        datasets: runs.map((r, i) => {
-          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
-          return {
-            label: formatDate(r.startTimeLocal.slice(0, 10)),
-            data: fullKmSplits.map(s => s.averageSpeed > 0 ? (1000 / s.averageSpeed / 60) : null),
-            borderColor: runColors[i],
-            backgroundColor: runColors[i] + '18',
-            tension: 0.3,
-            pointRadius: 3,
-            pointBackgroundColor: runColors[i],
-            borderWidth: 2,
-          };
-        })
-      },
-      options: {
-        ...chartDefaults,
-        scales: {
-          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
-          y: {
-            ...chartDefaults.scales.y,
-            reverse: true,
-            title: { display: true, text: 'Pace (min/km)', color: '#8b8fa3', font: { size: 10 } },
-            ticks: {
-              ...chartDefaults.scales.y.ticks,
-              callback: v => { const m = Math.floor(v); const s = Math.round((v - m) * 60); return `${m}:${s.toString().padStart(2, '0')}`; }
-            }
-          }
-        }
-      }
-    });
-    // Cadence per KM chart
-    new Chart(document.getElementById('runCadenceChart'), {
-      type: 'line',
-      data: {
-        labels: kmLabels,
-        datasets: runs.map((r, i) => {
-          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
-          return {
-            label: formatDate(r.startTimeLocal.slice(0, 10)),
-            data: fullKmSplits.map(s => s.averageCadence),
-            borderColor: runColors[i],
-            backgroundColor: runColors[i] + '18',
-            tension: 0.3,
-            pointRadius: 3,
-            pointBackgroundColor: runColors[i],
-            borderWidth: 2,
-          };
-        })
-      },
-      options: {
-        ...chartDefaults,
-        scales: {
-          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
-          y: { ...chartDefaults.scales.y, title: { display: true, text: 'Cadence (spm)', color: '#8b8fa3', font: { size: 10 } } }
-        }
-      }
-    });
-
-    // Grade-Adjusted Pace per KM chart
-    new Chart(document.getElementById('runGapChart'), {
-      type: 'line',
-      data: {
-        labels: kmLabels,
-        datasets: runs.map((r, i) => {
-          const fullKmSplits = r.kmSplits.filter(s => s.distance >= 900);
-          return {
-            label: formatDate(r.startTimeLocal.slice(0, 10)),
-            data: fullKmSplits.map(s => {
-              const gap = s.avgGradeAdjustedSpeed || s.averageSpeed;
-              return gap > 0 ? (1000 / gap / 60) : null;
-            }),
-            borderColor: runColors[i],
-            backgroundColor: runColors[i] + '18',
-            tension: 0.3,
-            pointRadius: 3,
-            pointBackgroundColor: runColors[i],
-            borderWidth: 2,
-          };
-        })
-      },
-      options: {
-        ...chartDefaults,
-        scales: {
-          x: { ...chartDefaults.scales.x, title: { display: true, text: 'KM', color: '#8b8fa3', font: { size: 10 } } },
-          y: {
-            ...chartDefaults.scales.y,
-            reverse: true,
-            title: { display: true, text: 'GAP (min/km)', color: '#8b8fa3', font: { size: 10 } },
-            ticks: {
-              ...chartDefaults.scales.y.ticks,
-              callback: v => { const m = Math.floor(v); const s = Math.round((v - m) * 60); return `${m}:${s.toString().padStart(2, '0')}`; }
-            }
-          }
-        }
-      }
-    });
-  } else {
-    document.getElementById('runHrChart').parentElement.parentElement.innerHTML = '<div class="no-data">No runs with split data yet</div>';
-    document.getElementById('runPaceChart').parentElement.parentElement.innerHTML = '';
-    document.getElementById('runCadenceChart').parentElement.parentElement.innerHTML = '';
-    document.getElementById('runGapChart').parentElement.parentElement.innerHTML = '';
-  }
-
-  // Activities
-  const activities = allActivities;
-  const actContainer = document.getElementById('activities');
-  if (activities.length === 0) {
-    actContainer.innerHTML = '<div class="no-data">No recent activities</div>';
-    return;
-  }
-
-  actContainer.innerHTML = activities.map(a => {
-    const typeKey = a.activityType?.typeKey || 'activity';
-    const isRun = typeKey === 'running';
-
-    const coreStats = isRun ? `
-      <div>
-        <div class="activity-stat-label">Distance</div>
-        <div class="activity-stat-value">${formatDistance(a.distance)} <span class="stat-unit">km</span></div>
-      </div>
-      <div>
-        <div class="activity-stat-label">Pace</div>
-        <div class="activity-stat-value">${formatPace(a.averageSpeed)} <span class="stat-unit">/km</span></div>
-      </div>
-      <div>
-        <div class="activity-stat-label">Avg HR</div>
-        <div class="activity-stat-value">${a.averageHR ?? '--'} <span class="stat-unit">bpm</span></div>
-      </div>
-    ` : `
-      <div>
-        <div class="activity-stat-label">Duration</div>
-        <div class="activity-stat-value">${formatDuration(a.duration)}</div>
-      </div>
-      <div>
-        <div class="activity-stat-label">Avg HR</div>
-        <div class="activity-stat-value">${a.averageHR ?? '--'} <span class="stat-unit">bpm</span></div>
-      </div>
-      <div>
-        <div class="activity-stat-label">Calories</div>
-        <div class="activity-stat-value">${a.calories ?? '--'}</div>
-      </div>
-    `;
-
-    let runExtras = '';
-    if (isRun) {
-      // Fastest Splits
-      const splits = [];
-      if (a.fastestSplit_1000) splits.push({ label: '1K', val: formatSplitPace(a.fastestSplit_1000) });
-      if (a.fastestSplit_1609) splits.push({ label: 'Mile', val: formatSplitPace(a.fastestSplit_1609) });
-      if (a.fastestSplit_5000) splits.push({ label: '5K', val: formatSplitPace(a.fastestSplit_5000 / 5) });
-      if (a.fastestSplit_10000) splits.push({ label: '10K', val: formatSplitPace(a.fastestSplit_10000 / 10) });
-      const splitsHtml = splits.length ? `
-        <div class="run-section">
-          <div class="run-section-title">Fastest Splits</div>
-          <div class="run-grid-4">
-            ${splits.map(s => `<div>
-              <div class="activity-stat-label">${s.label}</div>
-              <div class="activity-stat-value" style="font-size:0.9rem">${s.val}</div>
-            </div>`).join('')}
-          </div>
-        </div>` : '';
-
-      // Running Dynamics
-      const dynamics = [];
-      if (a.averageRunningCadenceInStepsPerMinute) dynamics.push({ label: 'Cadence', val: Math.round(a.averageRunningCadenceInStepsPerMinute), unit: 'spm' });
-      if (a.avgStrideLength) dynamics.push({ label: 'Stride', val: (a.avgStrideLength / 100).toFixed(2), unit: 'm' });
-      if (a.avgGroundContactTime) dynamics.push({ label: 'GCT', val: Math.round(a.avgGroundContactTime), unit: 'ms' });
-      if (a.avgVerticalOscillation) dynamics.push({ label: 'Vert Osc', val: a.avgVerticalOscillation.toFixed(1), unit: 'cm' });
-      const dynamicsHtml = dynamics.length ? `
-        <div class="run-section">
-          <div class="run-section-title">Running Dynamics</div>
-          <div class="run-grid">
-            ${dynamics.map(d => `<div>
-              <div class="activity-stat-label">${d.label}</div>
-              <div class="activity-stat-value" style="font-size:0.9rem">${d.val} <span class="stat-unit">${d.unit}</span></div>
-            </div>`).join('')}
-          </div>
-        </div>` : '';
-
-      // HR Zones
-      const hasZones = (a.hrTimeInZone_1 || 0) + (a.hrTimeInZone_2 || 0) + (a.hrTimeInZone_3 || 0) + (a.hrTimeInZone_4 || 0) + (a.hrTimeInZone_5 || 0) > 0;
-      const zonesHtml = hasZones ? `
-        <div class="run-section">
-          <div class="run-section-title">HR Zones</div>
-          <div class="hr-zones">${renderHrZones(a)}</div>
-        </div>` : '';
-
-      // Training Load & VO2 Max
-      const training = [];
-      if (a.vO2MaxValue) training.push({ label: 'VO2 Max', val: a.vO2MaxValue, unit: '' });
-      if (a.aerobicTrainingEffect) training.push({ label: 'Aerobic TE', val: a.aerobicTrainingEffect.toFixed(1), unit: '' });
-      if (a.activityTrainingLoad) training.push({ label: 'Load', val: Math.round(a.activityTrainingLoad), unit: '' });
-      if (a.elevationGain) training.push({ label: 'Elev Gain', val: Math.round(a.elevationGain), unit: 'm' });
-      if (a.avgPower) training.push({ label: 'Avg Power', val: Math.round(a.avgPower), unit: 'W' });
-      if (a.calories) training.push({ label: 'Calories', val: Math.round(a.calories), unit: '' });
-      const trainingHtml = training.length ? `
-        <div class="run-section">
-          <div class="run-section-title">Training</div>
-          <div class="run-grid">
-            ${training.map(t => `<div>
-              <div class="activity-stat-label">${t.label}</div>
-              <div class="activity-stat-value" style="font-size:0.9rem">${t.val} <span class="stat-unit">${t.unit}</span></div>
-            </div>`).join('')}
-          </div>
-        </div>` : '';
-
-      runExtras = splitsHtml + dynamicsHtml + zonesHtml + trainingHtml;
-    }
-
-    return `
-      <div class="activity">
-        <div class="activity-header">
-          <span class="activity-name">${a.activityName || typeKey}</span>
-          <span class="activity-type">${typeKey}</span>
-        </div>
-        <div class="activity-date">${formatDateTime(a.startTimeLocal)}</div>
-        <div class="activity-stats">${coreStats}</div>
-        ${runExtras}
-      </div>
-    `;
-  }).join('');
+  // Render active tab
+  renderTab(activeTab);
 }
 
 init();
