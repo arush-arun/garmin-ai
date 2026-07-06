@@ -1,5 +1,5 @@
 {
-  "last_sync": "2026-07-06T02:55:05.963904+00:00",
+  "last_sync": "2026-07-06T04:10:39.876310+00:00",
   "wellness": [
     {
       "restingHR": 59,
@@ -445,8 +445,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -578,15 +578,15 @@
       "endTimeGMT": "2026-07-04 22:53:47",
       "qualifyingDive": false,
       "activityUUID": "312efe1a-401d-4367-9c2c-1c58195ccb86",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -626,8 +626,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -778,15 +778,15 @@
       "endTimeGMT": "2026-07-04 22:43:02",
       "qualifyingDive": false,
       "activityUUID": "70937c64-264b-4366-bc6f-935abc5eb070",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -1021,8 +1021,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -1163,15 +1163,15 @@
       "endTimeGMT": "2026-07-02 23:31:13",
       "qualifyingDive": false,
       "activityUUID": "c6ca778c-cede-43ad-9e28-28490d217ec1",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -1276,8 +1276,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -1422,15 +1422,15 @@
       "endTimeGMT": "2026-07-02 21:08:05",
       "qualifyingDive": false,
       "activityUUID": "dc0ec9e4-3856-4a11-b529-9622147fd166",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -1470,8 +1470,8 @@
         "typeKey": "hiit",
         "parentTypeId": 29,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": false
+        "trimmable": false,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -1552,15 +1552,15 @@
       "endTimeGMT": "2026-07-02 02:15:29",
       "qualifyingDive": false,
       "activityUUID": "b2f78e85-b735-4d3a-9cf1-6cfaaf3d4a0e",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false
+      "purposeful": false,
+      "manualActivity": false
     },
     {
       "activityId": 23435242853,
@@ -1572,8 +1572,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -1707,15 +1707,15 @@
       "endTimeGMT": "2026-06-30 21:25:23",
       "qualifyingDive": false,
       "activityUUID": "a92fbd44-0f2f-4a40-b8ae-0962488c6f90",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -1807,8 +1807,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -1959,15 +1959,15 @@
       "endTimeGMT": "2026-06-27 22:18:23",
       "qualifyingDive": false,
       "activityUUID": "de836e35-52b8-4d01-9a68-81b962918776",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -2150,8 +2150,8 @@
         "typeKey": "yoga",
         "parentTypeId": 29,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": false
+        "trimmable": false,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -2227,15 +2227,15 @@
       "endTimeGMT": "2026-06-26 22:08:20",
       "qualifyingDive": false,
       "activityUUID": "6325adda-d3d7-4089-b9ef-33bc86ca1131",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false
+      "purposeful": false,
+      "manualActivity": false
     },
     {
       "activityId": 23379822008,
@@ -2247,8 +2247,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -2398,15 +2398,15 @@
       "endTimeGMT": "2026-06-25 21:41:14",
       "qualifyingDive": false,
       "activityUUID": "278c7aff-170f-4c78-afa3-9b1abb7ca7d5",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
@@ -2524,8 +2524,8 @@
         "typeKey": "hiit",
         "parentTypeId": 29,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": false
+        "trimmable": false,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -2605,15 +2605,15 @@
       "endTimeGMT": "2026-06-25 02:41:38",
       "qualifyingDive": false,
       "activityUUID": "c5734436-dca3-448f-80e0-4bbb1801c8a4",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false
+      "purposeful": false,
+      "manualActivity": false
     },
     {
       "activityId": 23356866005,
@@ -2625,8 +2625,8 @@
         "typeKey": "running",
         "parentTypeId": 17,
         "isHidden": false,
-        "restricted": false,
-        "trimmable": true
+        "trimmable": true,
+        "restricted": false
       },
       "eventType": {
         "typeId": 9,
@@ -2776,15 +2776,15 @@
       "endTimeGMT": "2026-06-23 21:25:09",
       "qualifyingDive": false,
       "activityUUID": "77c5bb0d-0669-4bc3-a957-5358992a8a49",
-      "decoDive": false,
-      "purposeful": false,
-      "manualActivity": false,
-      "autoCalcCalories": false,
       "elevationCorrected": false,
       "atpActivity": false,
+      "parent": false,
+      "decoDive": false,
+      "autoCalcCalories": false,
       "favorite": false,
       "pr": false,
-      "parent": false,
+      "purposeful": false,
+      "manualActivity": false,
       "kmSplits": [
         {
           "km": 1,
