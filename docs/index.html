@@ -460,6 +460,10 @@
     <h3>Daily Steps</h3>
     <div class="chart-wrapper tall"><canvas id="stepsChart"></canvas></div>
   </div>
+  <div class="chart-card">
+    <h3>Training Readiness</h3>
+    <div class="chart-wrapper"><canvas id="trainingReadinessChart"></canvas></div>
+  </div>
 </div>
 
 <div id="tab-sleep" class="tab-panel">
@@ -824,6 +828,35 @@ function renderTrends(chronological, labels) {
       }]
     },
     options: chartDefaults
+  });
+
+  // Training Readiness
+  const trData = chronological.map(w => w.trainingReadiness);
+  const trCtx = document.getElementById('trainingReadinessChart').getContext('2d');
+  chartInstances.trainingReadiness = new Chart(trCtx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Training Readiness',
+        data: trData,
+        borderColor: '#4ade80',
+        backgroundColor: makeGradient(trCtx, '#4ade80', 200),
+        fill: true,
+        spanGaps: true
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        x: chartDefaults.scales.x,
+        y: { ...chartDefaults.scales.y, min: 0, max: 100 }
+      },
+      plugins: {
+        ...chartDefaults.plugins,
+        annotation: undefined
+      }
+    }
   });
 }
 

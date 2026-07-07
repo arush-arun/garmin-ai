@@ -182,7 +182,12 @@ def fetch_wellness(garmin: Garmin, day: date) -> dict:
 
     try:
         tr = garmin.get_training_readiness(ds)
-        wellness["trainingReadiness"] = tr.get("score") or tr.get("trainingReadinessScore")
+        if isinstance(tr, list) and tr:
+            wellness["trainingReadiness"] = tr[0].get("score")
+        elif isinstance(tr, dict):
+            wellness["trainingReadiness"] = tr.get("score") or tr.get("trainingReadinessScore")
+        else:
+            wellness["trainingReadiness"] = None
     except Exception:
         wellness["trainingReadiness"] = None
 
